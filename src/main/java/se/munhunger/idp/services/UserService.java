@@ -8,16 +8,20 @@ import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * @author Marcus Münger
  */
 public class UserService {
 
+    private static Logger logger = Logger.getLogger(UserService.class.getName());
+
     @Inject
     private UserDAO userDAO;
 
     public void createUser(User user) throws NoSuchAlgorithmException {
+        logger.fine("Creating user: " + user.username);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(user.hashPassword.getBytes(StandardCharsets.UTF_8));
         user.hashPassword = new String(hash);

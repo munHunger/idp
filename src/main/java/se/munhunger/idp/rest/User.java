@@ -13,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * @author Marcus Münger
@@ -20,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
 @Api(value = "User management")
 @Path("/user")
 public class User {
+
+    private static Logger logger = Logger.getLogger(User.class.getName());
 
     @Inject
     private UserService userService;
@@ -33,7 +36,7 @@ public class User {
         try {
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                            .entity(new ErrorMessage("Could not get user",
                                                     "The user with that username was not found in the database"))
                            .build();
@@ -48,6 +51,7 @@ public class User {
         try {
             userService.createUser(user);
         } catch (NoSuchAlgorithmException e) {
+            logger.severe(() -> "Could not find hash algorithm. " + e.getMessage());
             return Response.serverError()
                            .entity(new ErrorMessage("Could not save user",
                                                     "Could not find the correct hashing algorithm")).build();
