@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: javax.servlet:javax.servlet-api:4.0.0-b05">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/4.0.0-b05/939de2550f57b7c04de41ad99be39baec091d20f/javax.servlet-api-4.0.0-b05.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/4.0.0-b05/2fbb0bc61822b3d084c42810714541a920dcfc48/javax.servlet-api-4.0.0-b05-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
