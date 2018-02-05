@@ -20,7 +20,7 @@ public class Bootstrap extends HttpServlet {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.0");
         beanConfig.setSchemes(new String[]{"http", "https"});
-        beanConfig.setBasePath("/api");
+        beanConfig.setBasePath("/idp-0.1/api");
         beanConfig.setResourcePackage("se.munhunger.idp");
         beanConfig.setScan(true);
     }

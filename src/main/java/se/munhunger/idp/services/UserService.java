@@ -23,8 +23,8 @@ public class UserService {
     public void createUser(User user) throws NoSuchAlgorithmException {
         logger.fine("Creating user: " + user.username);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(user.hashPassword.getBytes(StandardCharsets.UTF_8));
-        user.hashPassword = new String(hash);
+        byte[] hash = digest.digest(user.getHashPassword().getBytes(StandardCharsets.UTF_8));
+        user.setHashPassword(new String(hash));
         userDAO.createUser(user);
     }
 
