@@ -19,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
  */
 @Api(value = "User management")
 @Path("/user")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class User {
 
     @Inject
@@ -41,9 +43,8 @@ public class User {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Creates a new user in the DB")
-    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was created")
+    @ApiResponse(code = HttpServletResponse.SC_CREATED, message = "The user was created")
     public Response createUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.createUser(user);
@@ -52,6 +53,33 @@ public class User {
                            .entity(new ErrorMessage("Could not save user",
                                                     "Could not find the correct hashing algorithm")).build();
         }
-        return Response.noContent().build();
+        return Response.ok().build();
+    }
+
+    @PUT
+    @ApiOperation(value = "Updates a user in the DB")
+    @ApiResponse(code = HttpServletResponse.SC_OK, message = "The user was updated")
+    public Response updateUser(se.munhunger.idp.model.persistant.User user) {
+        try {
+            userService.updateUser(user);
+        } catch (ErrorMessage errorMessage) {
+            return Response.serverError()
+                    .entity(errorMessage).build();
+        }
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/{username}")
+    @ApiOperation(value = "Deletes a user in the DB")
+    @ApiResponse(code = HttpServletResponse.SC_OK, message = "The user was deleted")
+    public Response deleteUser(@PathParam("username") String username) {
+        try {
+            userService.deleteUser(username);
+        } catch (ErrorMessage errorMessage) {
+            return Response.serverError()
+                    .entity(errorMessage).build();
+        }
+        return Response.ok().build();
     }
 }
