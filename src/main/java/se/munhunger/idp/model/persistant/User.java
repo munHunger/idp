@@ -22,6 +22,5 @@ public class User {
     public String username;
     @ApiModelProperty(value = "A SHA-256 hashed password")
     @Column(name = "password", length = 128)
-    @JsonIgnore
     public String hashPassword;
 }

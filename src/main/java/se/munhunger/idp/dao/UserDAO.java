@@ -26,4 +26,5 @@ public class UserDAO extends DatabaseDAO {
             session.getTransaction().commit();
         }
     }
+    
 }
