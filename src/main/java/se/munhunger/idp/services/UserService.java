@@ -29,7 +29,10 @@ public class UserService {
         return userDAO.getUser(username).orElseThrow(NotInDatabaseException::new);
     }
 
-    public void updateUser(User user) throws ErrorMessage {
+    public void updateUser(User user) throws ErrorMessage, NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(user.getHashPassword().getBytes(StandardCharsets.UTF_8));
+        user.setHashPassword(new String(hash));
         userDAO.updateUser(user);
     }
 

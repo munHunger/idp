@@ -65,6 +65,8 @@ public class User {
         } catch (ErrorMessage errorMessage) {
             return Response.serverError()
                     .entity(errorMessage).build();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
         return Response.ok().build();
     }
