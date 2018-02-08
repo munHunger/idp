@@ -35,7 +35,6 @@ public class User {
     @ApiModelProperty(value = "The users email")
     @Column(name = "email", length = 128)
     private String email;
-
     public User () {
 
     }
