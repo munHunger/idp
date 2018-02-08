@@ -33,7 +33,7 @@ public class UserDAO extends DatabaseDAO {
     public void updateUser(User user) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
             Optional<User> tempUser = getUser(user.getUsername());
-            Optional.ofNullable(tempUser.isPresent()).orElseThrow(NotInDatabaseException::new);
+            tempUser.orElseThrow(NotInDatabaseException::new);
             session.merge(tempUser.get());
             session.getTransaction().commit();
         }
@@ -42,7 +42,7 @@ public class UserDAO extends DatabaseDAO {
     public void deleteUser(String username) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
             Optional<User> tempUser = getUser(username);
-            Optional.ofNullable(tempUser.isPresent()).orElseThrow(NotInDatabaseException::new);
+            tempUser.orElseThrow(NotInDatabaseException::new);
             session.beginTransaction();
             session.delete(tempUser.get());
             session.getTransaction().commit();
