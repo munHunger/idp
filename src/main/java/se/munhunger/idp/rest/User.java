@@ -62,10 +62,9 @@ public class User {
     public Response updateUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.updateUser(user);
-        } catch (ErrorMessage errorMessage) {
-            return Response.serverError()
-                    .entity(errorMessage).build();
         } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NotInDatabaseException e) {
             e.printStackTrace();
         }
         return Response.ok().build();
@@ -81,6 +80,8 @@ public class User {
         } catch (ErrorMessage errorMessage) {
             return Response.serverError()
                     .entity(errorMessage).build();
+        } catch (NotInDatabaseException e) {
+            e.printStackTrace();
         }
         return Response.ok().build();
     }

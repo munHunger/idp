@@ -2,6 +2,7 @@ package se.munhunger.idp.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import se.munhunger.idp.exception.NotInDatabaseException;
 import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.model.persistant.User;
 
@@ -29,13 +30,13 @@ public class UserDAO extends DatabaseDAO {
         }
     }
 
-    public void updateUser(User user) throws ErrorMessage {
+    public void updateUser(User user) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            User tempUser = session.get(User.class, user.getUsername());
-            System.out.println(tempUser.getUsername());
-            if (tempUser.getUsername() == null || tempUser.getUsername() == ""){
-                throw new ErrorMessage("No such user", "User with user name: " + user.getUsername() + " does not exist");
+            if (!getUser(user.getUsername()).isPresent()){
+                throw new NotInDatabaseException("User do not exist",
+                        "User with username: " + user.getUsername() + " do not exist in DB");
             }
+            User tempUser = getUser(user.getUsername()).get();
             // TODO fråga Marcus om session hanterar updateringar genom att bara passera objektet
             session.beginTransaction();
             session.merge(user);
@@ -43,10 +44,14 @@ public class UserDAO extends DatabaseDAO {
         }
     }
 
-    public void deleteUser(String username) {
+    public void deleteUser(String username) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
+            if (!getUser(username).isPresent()){
+                throw new NotInDatabaseException("User do not exist",
+                        "User with username: " + username + " do not exist in DB");
+            }
             session.beginTransaction();
-            User tempUser = session.get(User.class, username);
+            User tempUser = getUser(username).get();
             session.delete(tempUser);
             session.getTransaction().commit();
         }

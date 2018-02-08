@@ -29,14 +29,14 @@ public class UserService {
         return userDAO.getUser(username).orElseThrow(NotInDatabaseException::new);
     }
 
-    public void updateUser(User user) throws ErrorMessage, NoSuchAlgorithmException {
+    public void updateUser(User user) throws NoSuchAlgorithmException, NotInDatabaseException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(user.getHashPassword().getBytes(StandardCharsets.UTF_8));
         user.setHashPassword(new String(hash));
         userDAO.updateUser(user);
     }
 
-    public void deleteUser(String username) throws ErrorMessage {
+    public void deleteUser(String username) throws ErrorMessage, NotInDatabaseException {
         userDAO.deleteUser(username);
     }
 
