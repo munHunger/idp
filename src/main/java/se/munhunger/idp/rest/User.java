@@ -3,6 +3,7 @@ package se.munhunger.idp.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.NotInDatabaseException;
 import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.services.UserService;
@@ -47,13 +48,14 @@ public class User {
     public Response createUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.createUser(user);
+        } catch (EmailNotValidException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
+                    .build();
         } catch (NoSuchAlgorithmException e) {
             return Response.serverError()
-                           .entity(new NoSuchAlgorithmException("Could not hash password",
-                                                    e)).build();
-        } catch (ErrorMessage errorMessage) {
-            return Response.serverError()
-                    .entity(new ErrorMessage("No valid email", "Email: " + user.getEmail() + " is not valid")).build();
+                    .entity(new ErrorMessage("Could not create user", "Could not process password"))
+                    .build();
         }
         return Response.noContent().build();
     }
@@ -64,17 +66,18 @@ public class User {
     public Response updateUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.updateUser(user);
+        } catch (EmailNotValidException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
+                    .build();
         } catch (NoSuchAlgorithmException e) {
             return Response.serverError()
-                    .entity(new NoSuchAlgorithmException("Could not hash password",
-                            e)).build();
+                    .entity(new ErrorMessage("Could not update user", "Could not process password"))
+                    .build();
         } catch (NotInDatabaseException e) {
             return Response.serverError()
-                    .entity(new ErrorMessage("User do not exist",
-                            "User with username: " + user.getUsername() + " do not exist in DB")).build();
-        } catch (ErrorMessage errorMessage) {
-            return Response.serverError()
-                    .entity(new ErrorMessage("No valid email", "Email: " + user.getEmail() + " is not valid")).build();
+                    .entity(new ErrorMessage("Could not update user", "User with username: " + user.getUsername() + " does not exist"))
+                    .build();
         }
         return Response.noContent().build();
     }
@@ -88,8 +91,8 @@ public class User {
             userService.deleteUser(username);
         }  catch (NotInDatabaseException e) {
             return Response.serverError()
-                    .entity(new NotInDatabaseException("User do not exist",
-                            "User with username: " + username + " do not exist in DB")).build();
+                    .entity(new ErrorMessage("Could not delete user", "User with username: " + username + " does not exist"))
+                    .build();
         }
         return Response.noContent().build();
     }
