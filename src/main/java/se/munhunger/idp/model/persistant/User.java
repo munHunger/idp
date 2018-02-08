@@ -26,6 +26,15 @@ public class User {
     @ApiModelProperty(value = "A SHA-256 hashed password")
     @Column(name = "password", length = 128)
     private String hashPassword;
+    @ApiModelProperty(value = "The users firstname")
+    @Column(name = "firstname", length = 128)
+    private String firstname;
+    @ApiModelProperty(value = "The users lastname")
+    @Column(name = "lastname", length = 128)
+    private String lastname;
+    @ApiModelProperty(value = "The users email")
+    @Column(name = "email", length = 128)
+    private String email;
 
     public User () {
 
@@ -36,12 +45,16 @@ public class User {
         this.hashPassword = hashPassword;
     }
 
-    public String getUsername() {
-        return username;
+    public User(String username, String hashPassword, String firstname, String lastname, String email) {
+        this.username = username;
+        this.hashPassword = hashPassword;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUsername() {
+        return username;
     }
 
     public String getHashPassword() {
@@ -52,11 +65,38 @@ public class User {
         this.hashPassword = hashPassword;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", hashPassword='" + hashPassword + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
