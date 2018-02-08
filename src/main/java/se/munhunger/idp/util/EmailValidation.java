@@ -1,4 +1,4 @@
-package se.munhunger.idp.Util;
+package se.munhunger.idp.util;
 
 import org.apache.commons.validator.routines.EmailValidator;
 

@@ -1,16 +1,13 @@
 package se.munhunger.idp.services;
 
-import se.munhunger.idp.Util.EmailValidation;
-import se.munhunger.idp.Util.HashPass;
+import se.munhunger.idp.util.EmailValidation;
+import se.munhunger.idp.util.HashPass;
 import se.munhunger.idp.dao.UserDAO;
 import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.NotInDatabaseException;
-import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.model.persistant.User;
 
 import javax.inject.Inject;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 

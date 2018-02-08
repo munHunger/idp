@@ -1,4 +1,4 @@
-package se.munhunger.idp.Util;
+package se.munhunger.idp.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
