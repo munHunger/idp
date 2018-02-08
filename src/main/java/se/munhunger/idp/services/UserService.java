@@ -44,6 +44,4 @@ public class UserService {
     public void deleteUser(String username) throws NotInDatabaseException {
         userDAO.deleteUser(username);
     }
-
-
 }
