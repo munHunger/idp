@@ -44,7 +44,7 @@ public class User {
 
     @POST
     @ApiOperation(value = "Creates a new user in the DB")
-    @ApiResponse(code = HttpServletResponse.SC_CREATED, message = "The user was created")
+    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was created")
     public Response createUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.createUser(user);
@@ -53,7 +53,7 @@ public class User {
                            .entity(new ErrorMessage("Could not save user",
                                                     "Could not find the correct hashing algorithm")).build();
         }
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
     @PUT
@@ -67,7 +67,7 @@ public class User {
         } catch (NotInDatabaseException e) {
             e.printStackTrace();
         }
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
     @DELETE
@@ -83,6 +83,6 @@ public class User {
         } catch (NotInDatabaseException e) {
             e.printStackTrace();
         }
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 }
