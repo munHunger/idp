@@ -1,6 +1,7 @@
 package se.munhunger.idp.services;
 
 import se.munhunger.idp.Util.EmailValidation;
+import se.munhunger.idp.Util.HashPass;
 import se.munhunger.idp.dao.UserDAO;
 import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.NotInDatabaseException;
@@ -22,9 +23,7 @@ public class UserService {
     private UserDAO userDAO;
 
     public void createUser(User user) throws NoSuchAlgorithmException, EmailNotValidException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(user.getHashPassword().getBytes(StandardCharsets.UTF_8));
-        user.setHashPassword(new String(hash));
+        user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         Optional.ofNullable(!EmailValidation.isValidEmailAddress(user.getEmail())).orElseThrow(EmailNotValidException::new);
         userDAO.createUser(user);
     }
@@ -34,9 +33,7 @@ public class UserService {
     }
 
     public void updateUser(User user) throws NoSuchAlgorithmException, NotInDatabaseException, EmailNotValidException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(user.getHashPassword().getBytes(StandardCharsets.UTF_8));
-        user.setHashPassword(new String(hash));
+        user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         Optional.ofNullable(!EmailValidation.isValidEmailAddress(user.getEmail())).orElseThrow(EmailNotValidException::new);
         userDAO.updateUser(user);
     }
