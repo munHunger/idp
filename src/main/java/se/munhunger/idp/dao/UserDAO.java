@@ -32,12 +32,9 @@ public class UserDAO extends DatabaseDAO {
 
     public void updateUser(User user) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            if (!getUser(user.getUsername()).isPresent()){
-                throw new NotInDatabaseException("User do not exist",
-                        "User with username: " + user.getUsername() + " do not exist in DB");
-            }
-            User tempUser = getUser(user.getUsername()).get();
-            // TODO fråga Marcus om session hanterar updateringar genom att bara passera objektet
+            Optional.ofNullable(getUser(user.getUsername()).isPresent()).orElseThrow(
+                    () -> new NotInDatabaseException("User do not exist",
+                            "User with username: " + user.getUsername() + " do not exist in DB"));
             session.beginTransaction();
             session.merge(user);
             session.getTransaction().commit();
@@ -46,10 +43,9 @@ public class UserDAO extends DatabaseDAO {
 
     public void deleteUser(String username) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            if (!getUser(username).isPresent()){
-                throw new NotInDatabaseException("User do not exist",
-                        "User with username: " + username + " do not exist in DB");
-            }
+            Optional.ofNullable(getUser(username).isPresent()).orElseThrow(
+                    () -> new NotInDatabaseException("User do not exist",
+                            "User with username: " + username + " do not exist in DB"));
             session.beginTransaction();
             User tempUser = getUser(username).get();
             session.delete(tempUser);

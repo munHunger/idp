@@ -36,9 +36,8 @@ public class User {
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
             return Response.serverError()
-                           .entity(new ErrorMessage("Could not get user",
-                                                    "The user with that username was not found in the database"))
-                           .build();
+                    .entity(new ErrorMessage("User do not exist",
+                            "User with username: " + username + " do not exist in DB")).build();
         }
     }
 
@@ -50,8 +49,11 @@ public class User {
             userService.createUser(user);
         } catch (NoSuchAlgorithmException e) {
             return Response.serverError()
-                           .entity(new ErrorMessage("Could not save user",
-                                                    "Could not find the correct hashing algorithm")).build();
+                           .entity(new NoSuchAlgorithmException("Could not hash password",
+                                                    e)).build();
+        } catch (ErrorMessage errorMessage) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("No valid email", "Email: " + user.getEmail() + " is not valid")).build();
         }
         return Response.noContent().build();
     }
@@ -63,9 +65,16 @@ public class User {
         try {
             userService.updateUser(user);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            return Response.serverError()
+                    .entity(new NoSuchAlgorithmException("Could not hash password",
+                            e)).build();
         } catch (NotInDatabaseException e) {
-            e.printStackTrace();
+            return Response.serverError()
+                    .entity(new ErrorMessage("User do not exist",
+                            "User with username: " + user.getUsername() + " do not exist in DB")).build();
+        } catch (ErrorMessage errorMessage) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("No valid email", "Email: " + user.getEmail() + " is not valid")).build();
         }
         return Response.noContent().build();
     }
@@ -77,11 +86,10 @@ public class User {
     public Response deleteUser(@PathParam("username") String username) {
         try {
             userService.deleteUser(username);
-        } catch (ErrorMessage errorMessage) {
+        }  catch (NotInDatabaseException e) {
             return Response.serverError()
-                    .entity(errorMessage).build();
-        } catch (NotInDatabaseException e) {
-            e.printStackTrace();
+                    .entity(new NotInDatabaseException("User do not exist",
+                            "User with username: " + username + " do not exist in DB")).build();
         }
         return Response.noContent().build();
     }
