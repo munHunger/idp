@@ -4,9 +4,9 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 public class EmailValidation {
     public static boolean isValidEmailAddress(String email) {
-        boolean valid = true;
+        boolean valid = false;
         try {
-            valid = EmailValidator.getInstance().isValid(email);
+            valid = EmailValidator.getInstance(true).isValid(email);
         } catch (Exception e){
             e.printStackTrace();
     }
