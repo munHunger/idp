@@ -21,7 +21,8 @@ public class UserService {
 
     public void createUser(User user) throws NoSuchAlgorithmException, EmailNotValidException {
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
-        Optional.ofNullable(!EmailValidation.isValidEmailAddress(user.getEmail())).orElseThrow(EmailNotValidException::new);
+        if (!EmailValidation.isValidEmailAddress(user.getEmail()))
+                throw new EmailNotValidException();
         userDAO.createUser(user);
     }
 
@@ -31,7 +32,8 @@ public class UserService {
 
     public void updateUser(User user) throws NoSuchAlgorithmException, NotInDatabaseException, EmailNotValidException {
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
-        Optional.ofNullable(!EmailValidation.isValidEmailAddress(user.getEmail())).orElseThrow(EmailNotValidException::new);
+        if (!EmailValidation.isValidEmailAddress(user.getEmail()))
+            throw new EmailNotValidException();
         userDAO.updateUser(user);
     }
 
