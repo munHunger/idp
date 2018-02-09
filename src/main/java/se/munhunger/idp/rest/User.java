@@ -62,7 +62,7 @@ public class User {
 
     @PUT
     @ApiOperation(value = "Updates a user in the DB")
-    @ApiResponse(code = HttpServletResponse.SC_OK, message = "The user was updated")
+    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was updated")
     public Response updateUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.updateUser(user);
@@ -85,7 +85,7 @@ public class User {
     @DELETE
     @Path("/{username}")
     @ApiOperation(value = "Deletes a user in the DB")
-    @ApiResponse(code = HttpServletResponse.SC_OK, message = "The user was deleted")
+    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was deleted")
     public Response deleteUser(@PathParam("username") String username) {
         try {
             userService.deleteUser(username);
