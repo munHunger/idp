@@ -19,7 +19,6 @@ import javax.persistence.Table;
 @ApiModel(description = "A user")
 public class User {
     @Id
-    @Cascade(CascadeType.MERGE)
     @Column(name = "username", length = 64)
     @ApiModelProperty(value = "The unique identifier for a user")
     private String username;
