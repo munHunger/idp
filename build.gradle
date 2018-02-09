@@ -33,8 +33,18 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.39'
 
+    compile 'commons-validator:commons-validator:1.4.1'
+
 }
 
 war {
     destinationDir(file('build/'))
+}
+
+task deploy (dependsOn: war){
+    copy {
+        from "build/"
+        into "C:/dev/Tools/apache-tomcat-8.5.27-windows-x64/apache-tomcat-8.5.27/webapps"
+        include "*.war"
+    }
 }

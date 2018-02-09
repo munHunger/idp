@@ -3,6 +3,7 @@ package se.munhunger.idp.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.NotInDatabaseException;
 import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.services.UserService;
@@ -19,6 +20,8 @@ import java.security.NoSuchAlgorithmException;
  */
 @Api(value = "User management")
 @Path("/user")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class User {
 
     @Inject
@@ -34,23 +37,62 @@ public class User {
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
             return Response.serverError()
-                           .entity(new ErrorMessage("Could not get user",
-                                                    "The user with that username was not found in the database"))
-                           .build();
+                    .entity(new ErrorMessage("User do not exist",
+                            "User with username: " + username + " do not exist in DB")).build();
         }
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Creates a new user in the DB")
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was created")
     public Response createUser(se.munhunger.idp.model.persistant.User user) {
         try {
             userService.createUser(user);
+        } catch (EmailNotValidException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
+                    .build();
         } catch (NoSuchAlgorithmException e) {
             return Response.serverError()
-                           .entity(new ErrorMessage("Could not save user",
-                                                    "Could not find the correct hashing algorithm")).build();
+                    .entity(new ErrorMessage("Could not create user", "Could not process password"))
+                    .build();
+        }
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @ApiOperation(value = "Updates a user in the DB")
+    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was updated")
+    public Response updateUser(se.munhunger.idp.model.persistant.User user) {
+        try {
+            userService.updateUser(user);
+        } catch (EmailNotValidException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not update user", "Could not process password"))
+                    .build();
+        } catch (NotInDatabaseException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not update user", "User with username: " + user.getUsername() + " does not exist"))
+                    .build();
+        }
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("/{username}")
+    @ApiOperation(value = "Deletes a user in the DB")
+    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was deleted")
+    public Response deleteUser(@PathParam("username") String username) {
+        try {
+            userService.deleteUser(username);
+        }  catch (NotInDatabaseException e) {
+            return Response.serverError()
+                    .entity(new ErrorMessage("Could not delete user", "User with username: " + username + " does not exist"))
+                    .build();
         }
         return Response.noContent().build();
     }
