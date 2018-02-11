@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "client")
@@ -21,12 +22,12 @@ public class Client {
     private String description;
     @ApiModelProperty(value = "creationdate")
     @Column(name = "creationdate", length = 100)
-    private String creationdate;
+    private Date creationdate;
 
     public Client() {
     }
 
-    public Client(String name, String description, String creationdate) {
+    public Client(String name, String description, Date creationdate) {
         this.name = name;
         this.description = description;
         this.creationdate = creationdate;
@@ -48,11 +49,11 @@ public class Client {
         this.description = description;
     }
 
-    public String getCreationdate() {
+    public Date getCreationdate() {
         return creationdate;
     }
 
-    public void setCreationdate(String creationdate) {
+    public void setCreationdate(Date creationdate) {
         this.creationdate = creationdate;
     }
 }
