@@ -36,7 +36,7 @@ public class User {
         try {
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("User do not exist",
                             "User with username: " + username + " do not exist in DB")).build();
         }
