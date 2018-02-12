@@ -3,10 +3,7 @@ package se.munhunger.idp.model.persistant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -22,6 +19,7 @@ public class Client {
     private String description;
     @ApiModelProperty(value = "creationdate")
     @Column(name = "creationdate", length = 100)
+    @Temporal(TemporalType.DATE)
     private Date creationdate;
 
     public Client() {
@@ -37,9 +35,6 @@ public class Client {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;
@@ -53,7 +48,4 @@ public class Client {
         return creationdate;
     }
 
-    public void setCreationdate(Date creationdate) {
-        this.creationdate = creationdate;
-    }
 }

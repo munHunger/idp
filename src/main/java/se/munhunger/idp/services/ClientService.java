@@ -5,7 +5,6 @@ import se.munhunger.idp.exception.NotInDatabaseException;
 import se.munhunger.idp.model.persistant.Client;
 
 import javax.inject.Inject;
-import java.util.Date;
 
 public class ClientService {
 
@@ -13,7 +12,6 @@ public class ClientService {
     private ClientDAO clientDAO;
 
     public void createClient(Client client) {
-        client.setCreationdate(new Date());
         clientDAO.createClient(client);
     }
 
