@@ -39,9 +39,9 @@ public class UserDAO extends DatabaseDAO {
 
     public void deleteUser(String username) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            Optional.ofNullable(getUser(username)).orElseThrow(NotInDatabaseException::new);
+            Optional<User> user = getUser(username);
             session.beginTransaction();
-            session.delete(username);
+            session.delete(user.orElseThrow(NotInDatabaseException::new));
             session.getTransaction().commit();
         }
     }

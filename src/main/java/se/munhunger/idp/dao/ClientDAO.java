@@ -36,9 +36,9 @@ public class ClientDAO extends DatabaseDAO {
 
     public void deleteClient(String clientname) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            Optional.ofNullable(getClient(clientname)).orElseThrow(NotInDatabaseException::new);
+            Optional<Client> client = getClient(clientname);
             session.beginTransaction();
-            session.delete(clientname);
+            session.delete(client.orElseThrow(NotInDatabaseException::new));
             session.getTransaction().commit();
         }
     }
