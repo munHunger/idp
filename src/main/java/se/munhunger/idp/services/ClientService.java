@@ -5,7 +5,6 @@ import se.munhunger.idp.exception.NotInDatabaseException;
 import se.munhunger.idp.model.persistant.Client;
 
 import javax.inject.Inject;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 public class ClientService {

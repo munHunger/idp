@@ -30,7 +30,7 @@ public class Client {
     @ApiOperation(value = "Fetches a client from the database")
     @ApiResponse(code = HttpServletResponse.SC_OK, message = "The client identified by the clientname", response = se
             .munhunger.idp.model.persistant.Client.class)
-    public Response getUser(@PathParam("clientname") String clientname) {
+    public Response getClient(@PathParam("clientname") String clientname) {
         try {
             return Response.ok(clientService.getClient(clientname)).build();
         } catch (NotInDatabaseException e) {
@@ -43,7 +43,7 @@ public class Client {
     @POST
     @ApiOperation(value = "Creates a new client in the DB")
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The client was created")
-    public Response createUser(se.munhunger.idp.model.persistant.Client client) {
+    public Response createClient(se.munhunger.idp.model.persistant.Client client) {
         try {
             clientService.createClient(client);
         } catch (Exception e) {
@@ -57,12 +57,12 @@ public class Client {
     @PUT
     @ApiOperation(value = "Updates a client in the DB")
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The client was updated")
-    public Response updateUser(se.munhunger.idp.model.persistant.Client client) {
+    public Response updateClient(se.munhunger.idp.model.persistant.Client client) {
         try {
             clientService.updateClient(client);
         } catch (NotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage("Could not update user", "Client with clientname: " + client.getName() + " could not be updated"))
+                    .entity(new ErrorMessage("Could not update client", "Client with clientname: " + client.getName() + " could not be updated"))
                     .build();
         }
         return Response.noContent().build();
