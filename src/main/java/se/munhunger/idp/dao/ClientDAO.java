@@ -27,9 +27,9 @@ public class ClientDAO extends DatabaseDAO {
 
     public void updateClient(Client client) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            Optional.ofNullable(getClient(client.getName())).orElseThrow(NotInDatabaseException::new);
+            Optional<Client> updateClient = getClient(client.getName());
             session.beginTransaction();
-            session.update(client);
+            session.update(updateClient.orElseThrow(NotInDatabaseException::new));
             session.getTransaction().commit();
         }
     }

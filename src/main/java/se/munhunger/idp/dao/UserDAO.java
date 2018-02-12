@@ -30,9 +30,9 @@ public class UserDAO extends DatabaseDAO {
 
     public void updateUser(User user) throws NotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            Optional.ofNullable(getUser(user.getUsername())).orElseThrow(NotInDatabaseException::new);
+            Optional<User> updateUser = getUser(user.getUsername());
             session.beginTransaction();
-            session.update(user);
+            session.update(updateUser.orElseThrow(NotInDatabaseException::new));
             session.getTransaction().commit();
         }
     }
