@@ -48,7 +48,7 @@ public class Client {
             clientService.createClient(client);
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage("Could not create user", "Client with clientname: " + client.getName() + " could not be created"))
+                    .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created"))
                     .build();
         }
         return Response.noContent().build();

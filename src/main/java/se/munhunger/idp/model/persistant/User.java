@@ -34,10 +34,6 @@ public class User {
     @ApiModelProperty(value = "The users email")
     @Column(name = "email", length = 128)
     private String email;
-    @ApiModelProperty(value = "The list of clients a user has")
-    @Column(name = "clients")
-    @Cascade({CascadeType.ALL,})
-    private List<Client> clientList;
     public User () {
 
     }
