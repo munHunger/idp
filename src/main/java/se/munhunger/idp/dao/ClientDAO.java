@@ -1,7 +1,8 @@
 package se.munhunger.idp.dao;
 
 import org.hibernate.Session;
-import se.munhunger.idp.exception.NotInDatabaseException;
+import se.munhunger.idp.exception.ClientNotInDatabaseException;
+import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.persistant.Client;
 
 import java.util.Optional;
@@ -25,21 +26,21 @@ public class ClientDAO extends DatabaseDAO {
         }
     }
 
-    public void updateClient(Client client) throws NotInDatabaseException {
+    public void updateClient(Client client) throws ClientNotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
             Optional<Client> updateClient = getClient(client.getName());
-            updateClient.orElseThrow(NotInDatabaseException::new);
+            updateClient.orElseThrow(ClientNotInDatabaseException::new);
             session.beginTransaction();
             session.update(client);
             session.getTransaction().commit();
         }
     }
 
-    public void deleteClient(String clientname) throws NotInDatabaseException {
+    public void deleteClient(String clientname) throws ClientNotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
             Optional<Client> client = getClient(clientname);
             session.beginTransaction();
-            session.delete(client.orElseThrow(NotInDatabaseException::new));
+            session.delete(client.orElseThrow(ClientNotInDatabaseException::new));
             session.getTransaction().commit();
         }
     }

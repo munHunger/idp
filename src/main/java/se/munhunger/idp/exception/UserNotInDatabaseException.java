@@ -5,5 +5,5 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * @author Marcus Münger
  */
-public class NotInDatabaseException extends Exception{
+public class UserNotInDatabaseException extends Exception{
 }

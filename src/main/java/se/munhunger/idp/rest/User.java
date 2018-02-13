@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import se.munhunger.idp.exception.EmailNotValidException;
-import se.munhunger.idp.exception.NotInDatabaseException;
+import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.services.UserService;
 
@@ -35,7 +35,7 @@ public class User {
     public Response getUser(@PathParam("username") String username) {
         try {
             return Response.ok(userService.getUser(username)).build();
-        } catch (NotInDatabaseException e) {
+        } catch (UserNotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("User do not exist",
                             "User with username: " + username + " do not exist in DB")).build();
@@ -74,7 +74,7 @@ public class User {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
-        } catch (NotInDatabaseException e) {
+        } catch (UserNotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update user", "User with username: " + user.getUsername() + " does not exist"))
                     .build();
@@ -89,7 +89,7 @@ public class User {
     public Response deleteUser(@PathParam("username") String username) {
         try {
             userService.deleteUser(username);
-        }  catch (NotInDatabaseException e) {
+        }  catch (UserNotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete user", "User with username: " + username + " does not exist"))
                     .build();
