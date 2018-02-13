@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -21,7 +23,6 @@ public class Client {
     @Column(name = "creationdate", length = 100)
     @Temporal(TemporalType.DATE)
     private Date creationdate;
-
     public Client() {
     }
 
@@ -47,5 +48,4 @@ public class Client {
     public Date getCreationdate() {
         return creationdate;
     }
-
 }

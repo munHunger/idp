@@ -2,13 +2,8 @@ package se.munhunger.idp.model.persistant;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -34,6 +29,12 @@ public class User {
     @ApiModelProperty(value = "The users email")
     @Column(name = "email", length = 128)
     private String email;
+    @ApiModelProperty(value = "The list of user clients")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_clients",
+    joinColumns = {@JoinColumn(name = "user_name")},
+    inverseJoinColumns = {@JoinColumn(name = "client_name")})
+    private List<Client> clients;
     public User () {
 
     }
@@ -49,6 +50,15 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+    }
+
+    public User(String username, String hashPassword, String firstname, String lastname, String email, List<Client> clients) {
+        this.username = username;
+        this.hashPassword = hashPassword;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.clients = clients;
     }
 
     public String getUsername() {
@@ -87,4 +97,11 @@ public class User {
         this.email = email;
     }
 
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
 }
