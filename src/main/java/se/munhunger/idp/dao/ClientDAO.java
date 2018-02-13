@@ -2,7 +2,6 @@ package se.munhunger.idp.dao;
 
 import org.hibernate.Session;
 import se.munhunger.idp.exception.ClientNotInDatabaseException;
-import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.persistant.Client;
 
 import java.util.Optional;

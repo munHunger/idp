@@ -4,9 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -35,7 +33,6 @@ public class Client {
     public String getName() {
         return name;
     }
-
 
     public String getDescription() {
         return description;
