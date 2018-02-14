@@ -22,7 +22,7 @@ public class Client {
     @Column(name = "description", length = 600)
     private String description;
     @ApiModelProperty(value = "creationdate")
-    @Column(name = "creationdate", length = 100, updatable = false)
+    @Column(name = "creationdate", length = 100, updatable = false, nullable = false)
     @CreationTimestamp
     private Date creationdate;
 
@@ -38,7 +38,7 @@ public class Client {
     public String getName() {
         return name;
     }
-    
+
     public String getDescription() {
         return description;
     }
