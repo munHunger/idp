@@ -41,12 +41,27 @@ public class UserTest
                     Map<String, String> user = new HashMap<>();
                     user.put("username", "username");
                     user.put("password", "password");
-                    Assert.assertEquals("non 204 from backend", 204,
+                    user.put("email", "mail@mail.com");
+                    Assert.assertEquals(204,
                                         client.target(baseURL + "/api/user")
                                               .request()
                                               .post(Entity.json(user))
                                               .getStatus());
                 });
+                it("returns an error if the email is invalid", () -> {
+                    Map<String, String> user = new HashMap<>();
+                    user.put("username", "username");
+                    user.put("password", "password");
+                    user.put("email", "mail.com");
+                    Assert.assertEquals(500,
+                                        client.target(baseURL + "/api/user")
+                                              .request()
+                                              .post(Entity.json(user))
+                                              .getStatus());
+                });
+            });
+            afterEach(() -> {
+                client.target(baseURL + "/api/user/username").request().delete();
             });
         });
     }
