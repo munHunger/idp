@@ -37,7 +37,7 @@ pipeline {
                                 docker.image('mysql:latest').inside("--link ${mysql.id}:db") {
                                     sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
                                 }
-                                image.inside("--link ${mysq.id}:db") {
+                                image.inside("--link ${mysql.id}:db") {
                                     sh 'sleep 5'
                                 }
                                 try {
