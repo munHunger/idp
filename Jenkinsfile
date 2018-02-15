@@ -23,7 +23,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'gradle war'
+                sh 'gradle war -b build_jenkins.gradle'
             }
         }
         stage('test') {
@@ -40,7 +40,7 @@ pipeline {
                             }
                             try {
                                 docker.image('gradle:latest').inside("--link ${h.id}:backend -e 'IDP_URL=http://backend:8080'") {
-                                    sh 'gradle test'
+                                    sh 'gradle test -b build_jenkins.gradle'
                                 }
                             }
                             catch (exc) {
