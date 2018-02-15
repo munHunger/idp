@@ -30,22 +30,26 @@ pipeline {
             steps {
                 script {
                     def image = docker.build("munhunger/idp");
-                    docker.image('mysql:latest').withRun('-e "MYSQL_ROOT_PASSWORD=password" -e "MYSQL_USER=root" -e "MYSQL_DATABASE=idp"') { c -> 
-                        image.withRun("--link ${c.id}:db -e DB_URL=mysql://db:3306/idp?useSSL=false -e DB_PASS=password -e DB_USER=root") { h -> 
-                            docker.image('mysql:latest').inside("--link ${c.id}:db") {
-                                sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
-                            }
-                            image.inside("--link ${c.id}:db") {
-                                sh 'sleep 5'
-                            }
-                            try {
-                                docker.image('gradle:latest').inside("--link ${h.id}:backend -e 'IDP_URL=http://backend:8080'") {
-                                    sh 'gradle test -b build_jenkins.gradle'
+                    docker.image('gradle:latest').withRun() { gradle ->
+                        docker.image('mysql:latest').withRun('-e "MYSQL_ROOT_PASSWORD=password" -e "MYSQL_USER=root" -e "MYSQL_DATABASE=idp"') { mysql -> 
+                            image.withRun("--link ${mysql.id}:db -e DB_URL=mysql://db:3306/idp?useSSL=false -e DB_PASS=password -e DB_USER=root") { backend -> 
+
+                                docker.image('mysql:latest').inside("--link ${mysql.id}:db") {
+                                    sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
                                 }
-                            }
-                            catch (exc) {
-                                sh "docker logs ${h.id}"
-                                throw exc
+                                image.inside("--link ${mysq.id}:db") {
+                                    sh 'sleep 5'
+                                }
+                                try {
+                                    docker.image('gradle:latest').inside("--link ${backend.id}:backend -e 'IDP_URL=http://backend:8080'") {
+                                        sh 'gradle test -b build_jenkins.gradle'
+                                    }
+                                }
+                                catch (exc) {
+                                    sh "docker logs ${gradle.id}"
+                                    sh "docker logs ${backend.id}"
+                                    throw exc
+                                }
                             }
                         }
                     }
