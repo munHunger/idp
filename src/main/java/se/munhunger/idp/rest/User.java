@@ -37,6 +37,7 @@ public class User {
             .munhunger.idp.model.persistant.User.class)
     public Response getUser(@PathParam("username") String username) {
         try {
+            logger.info(() -> "fetching user with name " + username);
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -50,6 +51,7 @@ public class User {
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was created")
     public Response createUser(se.munhunger.idp.model.persistant.User user) {
         try {
+            logger.info(() -> "creating user " + user.getUsername());
             userService.createUser(user);
         } catch (EmailNotValidException e) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -91,6 +93,7 @@ public class User {
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was deleted")
     public Response deleteUser(@PathParam("username") String username) {
         try {
+            logger.info(() -> "deleting user " + username);
             userService.deleteUser(username);
         }  catch (NotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
