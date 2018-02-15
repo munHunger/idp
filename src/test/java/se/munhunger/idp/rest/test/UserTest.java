@@ -21,7 +21,7 @@ import static com.mscharhag.oleaster.runner.StaticRunnerSupport.it;
 @PowerMockRunnerDelegate(OleasterRunner.class)
 public class UserTest
 {
-    private String baseURL = (System.getenv().get("IDP_URL") != null ? System.getenv().get("IDP_URL") : "http://localhost:8080") + "/idp";
+    private String baseURL = (System.getenv().get("IDP_URL") != null ? System.getenv().get("IDP_URL") : "http://localhost:8081") + "/idp";
     private Client client;
 
     {

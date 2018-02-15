@@ -1,5 +1,6 @@
 package se.munhunger.idp.model.persistant;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cascade;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @ApiModel(description = "A user")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     @Id
     @Column(name = "username", length = 64)
