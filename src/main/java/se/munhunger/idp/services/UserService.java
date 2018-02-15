@@ -23,7 +23,7 @@ public class UserService {
     private UserDAO userDAO;
 
     public void createUser(User user) throws NoSuchAlgorithmException, EmailNotValidException {
-        logger.fine("Creating user: " + user.username);
+        logger.fine("Creating user: " + user.getUsername());
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail()))
                 throw new EmailNotValidException();

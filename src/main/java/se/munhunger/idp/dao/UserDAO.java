@@ -27,7 +27,7 @@ public class UserDAO extends DatabaseDAO {
     }
 
     public void createUser(User user) {
-        logger.fine(() -> "Creating user:" + user.username);
+        logger.fine(() -> "Creating user:" + user.getUsername());
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.save(user);

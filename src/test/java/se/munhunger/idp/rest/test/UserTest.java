@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.mscharhag.oleaster.runner.StaticRunnerSupport.*;
-import static com.mscharhag.oleaster.runner.StaticRunnerSupport.afterEach;
 import static com.mscharhag.oleaster.runner.StaticRunnerSupport.it;
 
 @RunWith(PowerMockRunner.class)
