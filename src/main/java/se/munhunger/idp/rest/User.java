@@ -36,7 +36,7 @@ public class User {
         try {
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("User do not exist",
                             "User with username: " + username + " do not exist in DB")).build();
         }
@@ -49,11 +49,11 @@ public class User {
         try {
             userService.createUser(user);
         } catch (EmailNotValidException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
         }
@@ -67,15 +67,15 @@ public class User {
         try {
             userService.updateUser(user);
         } catch (EmailNotValidException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (NotInDatabaseException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update user", "User with username: " + user.getUsername() + " does not exist"))
                     .build();
         }
@@ -90,7 +90,7 @@ public class User {
         try {
             userService.deleteUser(username);
         }  catch (NotInDatabaseException e) {
-            return Response.serverError()
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete user", "User with username: " + username + " does not exist"))
                     .build();
         }
