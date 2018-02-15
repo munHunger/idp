@@ -9,6 +9,7 @@ import se.munhunger.idp.model.persistant.User;
 
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientService {
@@ -21,7 +22,7 @@ public class ClientService {
 
     public void createClient(Client client, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException {
         List clientList;
-        clientDAO.createClient(client);
+        //clientDAO.createClient(client);
         User user = userService.getUser(username);
         clientList = user.getClients();
         clientList.add(client);
@@ -37,7 +38,19 @@ public class ClientService {
         clientDAO.updateClient(client);
     }
 
-    public void deleteClient(String clientname) throws ClientNotInDatabaseException {
-        clientDAO.deleteClient(clientname);
+    public void deleteClient(String clientname, String username) throws Exception {
+        List<Client> oldList;
+        List<Client> newList = new ArrayList<>();
+        User user = userService.getUser(username);
+        oldList = user.getClients();
+        Client client = getClient(clientname);
+        for (Client tempClient: oldList) {
+            if(!tempClient.getName().equals(client.getName())) {
+                newList.add(tempClient);
+            }
+        }
+        user.setClients(newList);
+        userService.updateUser(user);
+        //clientDAO.deleteClient(clientname);
     }
 }

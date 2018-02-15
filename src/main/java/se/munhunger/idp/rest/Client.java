@@ -78,16 +78,24 @@ public class Client {
     }
 
     @DELETE
-    @Path("/{clientname}")
+    @Path("/{clientname}/{username}")
     @ApiOperation(value = "Deletes a user in the DB")
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was deleted")
-    public Response deleteUser(@PathParam("clientname") String clientname) {
+    public Response deleteUser(@PathParam("clientname") String clientname,@PathParam("username") String username) {
         try {
-            clientService.deleteClient(clientname);
+            clientService.deleteClient(clientname, username);
         }  catch (ClientNotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete client", "User with clientname: " + clientname + " does not exist"))
                     .build();
+        } catch (EmailNotValidException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UserNotInDatabaseException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Response.noContent().build();
     }

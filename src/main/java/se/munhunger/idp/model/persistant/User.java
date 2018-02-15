@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class User {
     @JoinTable(name = "user_clients",
     joinColumns = {@JoinColumn(name = "user_name")},
     inverseJoinColumns = {@JoinColumn(name = "client_name")})
-    private List<Client> clients;
+    private List<Client> clients = new ArrayList<>();
     public User () {
 
     }
