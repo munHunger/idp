@@ -54,11 +54,11 @@ public class User {
             logger.info(() -> "creating user " + user.getUsername());
             userService.createUser(user);
         } catch (EmailNotValidException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
         }
@@ -72,11 +72,11 @@ public class User {
         try {
             userService.updateUser(user);
         } catch (EmailNotValidException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (NotInDatabaseException e) {

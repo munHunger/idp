@@ -40,7 +40,7 @@ public class UserTest
                 it("returns 204 upon creation", () -> {
                     Map<String, String> user = new HashMap<>();
                     user.put("username", "username");
-                    user.put("password", "password");
+                    user.put("hashPassword", "password");
                     user.put("email", "mail@mail.com");
                     Assert.assertEquals(204,
                                         client.target(baseURL + "/api/user")
@@ -51,7 +51,7 @@ public class UserTest
                 it("returns an error if the email is invalid", () -> {
                     Map<String, String> user = new HashMap<>();
                     user.put("username", "username");
-                    user.put("password", "password");
+                    user.put("hashPassword", "password");
                     user.put("email", "mail.com");
                     Assert.assertEquals(500,
                                         client.target(baseURL + "/api/user")
