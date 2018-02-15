@@ -30,5 +30,6 @@
         </property>
 
         <mapping class="se.munhunger.idp.model.persistant.User" />
+        <mapping class="se.munhunger.idp.model.persistant.Client" />
     </session-factory>
 </hibernate-configuration>
