@@ -10,7 +10,6 @@ import se.munhunger.idp.model.persistant.User;
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
-import java.util.Optional;
 
 /**
  * @author Marcus Münger
@@ -24,7 +23,7 @@ public class UserService {
 
     public void createUser(User user) throws NoSuchAlgorithmException, EmailNotValidException {
         logger.fine("Creating user: " + user.getUsername());
-        user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
+        user.setPassword(HashPass.hashPassword(user.getPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail()))
                 throw new EmailNotValidException();
         userDAO.createUser(user);
@@ -35,7 +34,7 @@ public class UserService {
     }
 
     public void updateUser(User user) throws NoSuchAlgorithmException, NotInDatabaseException, EmailNotValidException {
-        user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
+        user.setPassword(HashPass.hashPassword(user.getPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail()))
             throw new EmailNotValidException();
         userDAO.updateUser(user);
