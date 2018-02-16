@@ -79,9 +79,9 @@ public class Client {
 
     @DELETE
     @Path("/{clientname}/{username}")
-    @ApiOperation(value = "Deletes a user in the DB")
-    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was deleted")
-    public Response deleteUser(@PathParam("clientname") String clientname,@PathParam("username") String username) {
+    @ApiOperation(value = "Deletes a client in the DB")
+    @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The client was deleted")
+    public Response deleteClient(@PathParam("clientname") String clientname,@PathParam("username") String username) {
         try {
             clientService.deleteClient(clientname, username);
         }  catch (ClientNotInDatabaseException e) {
