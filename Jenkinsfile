@@ -24,6 +24,7 @@ pipeline {
             }
             steps {
                 sh 'gradle war'
+                sh 'ls build'
             }
         }
         stage('test') {
