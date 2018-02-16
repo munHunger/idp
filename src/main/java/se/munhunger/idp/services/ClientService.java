@@ -61,6 +61,7 @@ public class ClientService {
             }
             user.setClients(newList);
             userService.updateUser(user);
+            clientDAO.deleteClient(clientname);
         } catch (UserNotInDatabaseException e) {
             throw new UserNotInDatabaseException("The user for client: " + clientname + " does not exist, check user");
         } catch (ClientNotInDatabaseException e) {
