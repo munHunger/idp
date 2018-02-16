@@ -23,7 +23,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'head -n -8 build.gradle > build.gradle'
+                sh "'head -n -8 build.gradle' > build.gradle"
                 sh 'cat build.gradle'
                 sh 'gradle war'
             }
