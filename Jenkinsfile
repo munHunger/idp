@@ -64,6 +64,13 @@ pipeline {
                 }
             }
         }
+        stage('analyze code convention') {
+            steps {
+                script {
+                    sh 'gradlew sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710'
+                }
+            }
+        }
         stage('build dockerimage') {
             steps {
                 script {
