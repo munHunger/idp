@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * @author Marcus Münger
@@ -23,6 +24,8 @@ import java.security.NoSuchAlgorithmException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class User {
+
+    private static Logger logger = Logger.getLogger(User.class.getName());
 
     @Inject
     private UserService userService;
@@ -34,6 +37,7 @@ public class User {
             .munhunger.idp.model.persistant.User.class)
     public Response getUser(@PathParam("username") String username) {
         try {
+            logger.info(() -> "fetching user with name " + username);
             return Response.ok(userService.getUser(username)).build();
         } catch (NotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -47,13 +51,14 @@ public class User {
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was created")
     public Response createUser(se.munhunger.idp.model.persistant.User user) {
         try {
+            logger.info(() -> "creating user " + user.getUsername());
             userService.createUser(user);
         } catch (EmailNotValidException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
         }
@@ -67,11 +72,11 @@ public class User {
         try {
             userService.updateUser(user);
         } catch (EmailNotValidException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.serverError()
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (NotInDatabaseException e) {
@@ -88,6 +93,7 @@ public class User {
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The user was deleted")
     public Response deleteUser(@PathParam("username") String username) {
         try {
+            logger.info(() -> "deleting user " + username);
             userService.deleteUser(username);
         }  catch (NotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
