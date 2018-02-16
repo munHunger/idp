@@ -2,6 +2,7 @@ package se.munhunger.idp.services;
 
 import se.munhunger.idp.dao.UserDAO;
 import se.munhunger.idp.exception.EmailNotValidException;
+import se.munhunger.idp.exception.OrphanageException;
 import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.persistant.User;
 import se.munhunger.idp.util.EmailValidation;
@@ -36,7 +37,11 @@ public class UserService {
         userDAO.updateUser(user);
     }
 
-    public void deleteUser(String username) throws UserNotInDatabaseException {
+    public void deleteUser(String username) throws UserNotInDatabaseException, OrphanageException {
+        User user = getUser(username);
+        if (user.getClients().size() != 0){
+            throw new OrphanageException("The user cannot be deleted, it will create client orpahans");
+        }
         userDAO.deleteUser(username);
     }
 }
