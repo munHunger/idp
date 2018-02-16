@@ -15,6 +15,12 @@ pipeline {
                 }
             }
         }
+        stage ('Clean') {
+            deleteDir()
+        }
+        stage ('Checkout') {
+            checkout scm
+        }
         stage('build war') {
             agent {
                 docker { 
