@@ -22,7 +22,6 @@ public class ClientService {
 
     public void createClient(Client client, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException {
         List clientList;
-        //clientDAO.createClient(client);
         User user = userService.getUser(username);
         clientList = user.getClients();
         clientList.add(client);
@@ -51,6 +50,5 @@ public class ClientService {
         }
         user.setClients(newList);
         userService.updateUser(user);
-        //clientDAO.deleteClient(clientname);
     }
 }
