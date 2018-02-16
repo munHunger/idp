@@ -20,13 +20,22 @@ public class ClientService {
     @Inject
     private UserService userService;
 
-    public void createClient(Client client, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException {
+    public void createClient(Client client, String username) throws Exception {
         List clientList;
-        User user = userService.getUser(username);
-        clientList = user.getClients();
-        clientList.add(client);
-        user.setClients(clientList);
-        userService.updateUser(user);
+        User user = null;
+        try {
+            user = userService.getUser(username);
+            clientList = user.getClients();
+            clientList.add(client);
+            user.setClients(clientList);
+            userService.updateUser(user);
+        } catch (UserNotInDatabaseException e) {
+            throw new UserNotInDatabaseException("The user for client: " + client.getName() + " does not exist, check user");
+        } catch (EmailNotValidException e) {
+            throw new EmailNotValidException("The user email for client: " + user.getEmail() + " is not valid, check email");
+        } catch (NoSuchAlgorithmException e) {
+            throw new NoSuchAlgorithmException("The user password for client, was never processed, check password");
+        }
     }
 
     public Client getClient(String clientname) throws ClientNotInDatabaseException {
@@ -40,15 +49,26 @@ public class ClientService {
     public void deleteClient(String clientname, String username) throws Exception {
         List<Client> oldList;
         List<Client> newList = new ArrayList<>();
-        User user = userService.getUser(username);
-        oldList = user.getClients();
-        Client client = getClient(clientname);
-        for (Client tempClient: oldList) {
-            if(!tempClient.getName().equals(client.getName())) {
-                newList.add(tempClient);
+        User user = null;
+        try {
+            user = userService.getUser(username);
+            oldList = user.getClients();
+            Client client = getClient(clientname);
+            for (Client tempClient: oldList) {
+                if(!tempClient.getName().equals(client.getName())) {
+                    newList.add(tempClient);
+                }
             }
+            user.setClients(newList);
+            userService.updateUser(user);
+        } catch (UserNotInDatabaseException e) {
+            throw new UserNotInDatabaseException("The user for client: " + clientname + " does not exist, check user");
+        } catch (ClientNotInDatabaseException e) {
+            throw new ClientNotInDatabaseException("The client with client: " + clientname + " does not exist");
+        } catch (EmailNotValidException e) {
+            throw new EmailNotValidException("The user email for client: " + user.getEmail() + " is not valid, check email");
+        } catch (NoSuchAlgorithmException e) {
+            throw new NoSuchAlgorithmException("The user password for client, was never processed, check password");
         }
-        user.setClients(newList);
-        userService.updateUser(user);
     }
 }

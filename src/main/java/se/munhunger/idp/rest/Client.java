@@ -47,17 +47,9 @@ public class Client {
     public Response createClient(@PathParam("username") String username, se.munhunger.idp.model.persistant.Client client) {
         try {
             clientService.createClient(client, username);
-        } catch (EmailNotValidException e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage("Could not update user", "User with email for user: " + username + " is not valid"))
-                    .build();
-        } catch (NoSuchAlgorithmException e) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage("Could not update user", "Could not process password"))
-                    .build();
-        } catch (UserNotInDatabaseException e) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage("Could not update user", "User with username: " + username + " does not exist"))
+                    .entity(e)
                     .build();
         }
         return Response.noContent().build();
@@ -84,18 +76,10 @@ public class Client {
     public Response deleteClient(@PathParam("clientname") String clientname,@PathParam("username") String username) {
         try {
             clientService.deleteClient(clientname, username);
-        }  catch (ClientNotInDatabaseException e) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage("Could not delete client", "User with clientname: " + clientname + " does not exist"))
-                    .build();
-        } catch (EmailNotValidException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UserNotInDatabaseException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(e)
+                    .build();
         }
         return Response.noContent().build();
     }
