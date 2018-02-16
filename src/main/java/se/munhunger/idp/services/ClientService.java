@@ -22,22 +22,14 @@ public class ClientService {
     @Inject
     private UserService userService;
 
-    public void createClient(Client client, String username) throws Exception {
+    public void createClient(Client client, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException {
         List clientList;
         User user = null;
-        try {
-            user = userService.getUser(username);
-            clientList = user.getClients();
-            clientList.add(client);
-            user.setClients(clientList);
-            userService.updateUser(user);
-        } catch (UserNotInDatabaseException e) {
-            throw new UserNotInDatabaseException("The user for client: " + client.getName() + " does not exist, check user");
-        } catch (EmailNotValidException e) {
-            throw new EmailNotValidException("The user email for client: " + user.getEmail() + " is not valid, check email");
-        } catch (NoSuchAlgorithmException e) {
-            throw new NoSuchAlgorithmException("The user password for client, was never processed, check password");
-        }
+        user = userService.getUser(username);
+        clientList = user.getClients();
+        clientList.add(client);
+        user.setClients(clientList);
+        userService.updateUser(user);
     }
 
     public Client getClient(String clientname) throws ClientNotInDatabaseException {
@@ -48,24 +40,14 @@ public class ClientService {
         clientDAO.updateClient(client);
     }
 
-    public void deleteClient(String clientname, String username) throws Exception {
+    public void deleteClient(String clientname, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException, ClientNotInDatabaseException {
         User user = null;
-        try {
-            user = userService.getUser(username);
-            List<Client> filteredClients = user.getClients().stream()
-                    .filter(c -> !c.getName().equals(clientname))
-                    .collect(Collectors.toList());
-            user.setClients(filteredClients);
-            userService.updateUser(user);
-            clientDAO.deleteClient(clientname);
-        } catch (UserNotInDatabaseException e) {
-            throw new UserNotInDatabaseException("The user for client: " + clientname + " does not exist, check user");
-        } catch (ClientNotInDatabaseException e) {
-            throw new ClientNotInDatabaseException("The client with client: " + clientname + " does not exist");
-        } catch (EmailNotValidException e) {
-            throw new EmailNotValidException("The user email for client: " + user.getEmail() + " is not valid, check email");
-        } catch (NoSuchAlgorithmException e) {
-            throw new NoSuchAlgorithmException("The user password for client, was never processed, check password");
-        }
+        user = userService.getUser(username);
+        List<Client> filteredClients = user.getClients().stream()
+                .filter(c -> !c.getName().equals(clientname))
+                .collect(Collectors.toList());
+        user.setClients(filteredClients);
+        userService.updateUser(user);
+        clientDAO.deleteClient(clientname);
     }
 }

@@ -47,9 +47,17 @@ public class Client {
     public Response createClient(@PathParam("username") String username, se.munhunger.idp.model.persistant.Client client) {
         try {
             clientService.createClient(client, username);
-        } catch (Exception e) {
+        } catch (EmailNotValidException e) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(e)
+                    .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created due to user email is not valid"))
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created due to password could not be processed correctly"))
+                    .build();
+        } catch (UserNotInDatabaseException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created due to user do not exist"))
                     .build();
         }
         return Response.noContent().build();
@@ -76,9 +84,21 @@ public class Client {
     public Response deleteClient(@PathParam("clientname") String clientname,@PathParam("username") String username) {
         try {
             clientService.deleteClient(clientname, username);
-        } catch (Exception e) {
+        } catch (ClientNotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(e)
+                    .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to the client do not exist"))
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to password could not be processed correctly"))
+                    .build();
+        } catch (EmailNotValidException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to user email is not valid"))
+                    .build();
+        } catch (UserNotInDatabaseException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to user do not exist"))
                     .build();
         }
         return Response.noContent().build();

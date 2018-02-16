@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import se.munhunger.idp.exception.EmailNotValidException;
+import se.munhunger.idp.exception.OrphanageException;
 import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.services.UserService;
@@ -92,6 +93,10 @@ public class User {
         }  catch (UserNotInDatabaseException e) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete user", "User with username: " + username + " does not exist"))
+                    .build();
+        } catch (OrphanageException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorMessage("Could not delete user", "User cannot be deleted due to the risk of the user clients being orphans"))
                     .build();
         }
         return Response.noContent().build();
