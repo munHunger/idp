@@ -53,15 +53,6 @@ public class User {
         this.email = email;
     }
 
-    public User(String username, String hashPassword, String firstname, String lastname, String email, List<Client> clients) {
-        this.username = username;
-        this.hashPassword = hashPassword;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.clients = clients;
-    }
-
     public String getUsername() {
         return username;
     }
