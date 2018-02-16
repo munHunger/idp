@@ -26,6 +26,7 @@ public class UserTest
 
     {
         before(() -> {
+            System.out.println("Starting test on base url: " + baseURL);
             client = ClientBuilder.newClient();
         });
         describe("System is up and running", () -> {
