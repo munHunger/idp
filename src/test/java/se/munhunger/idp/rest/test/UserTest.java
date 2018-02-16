@@ -45,6 +45,8 @@ public class UserTest
                     Assert.assertEquals(204,
                                         client.target(baseURL + "/api/user")
                                               .request()
+                                              .header("accept", "application/json")
+                                              .header("content-type", "application/json")
                                               .post(Entity.json(user))
                                               .getStatus());
                 });
