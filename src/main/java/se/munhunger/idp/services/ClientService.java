@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ClientService {
 
@@ -47,19 +49,13 @@ public class ClientService {
     }
 
     public void deleteClient(String clientname, String username) throws Exception {
-        List<Client> oldList;
-        List<Client> newList = new ArrayList<>();
         User user = null;
         try {
             user = userService.getUser(username);
-            oldList = user.getClients();
-            Client client = getClient(clientname);
-            for (Client tempClient: oldList) {
-                if(!tempClient.getName().equals(client.getName())) {
-                    newList.add(tempClient);
-                }
-            }
-            user.setClients(newList);
+            List<Client> filteredClients = user.getClients().stream()
+                    .filter(c -> !c.getName().equals(clientname))
+                    .collect(Collectors.toList());
+            user.setClients(filteredClients);
             userService.updateUser(user);
             clientDAO.deleteClient(clientname);
         } catch (UserNotInDatabaseException e) {
