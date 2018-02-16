@@ -16,10 +16,14 @@ pipeline {
             }
         }
         stage ('Clean') {
-            deleteDir()
+            steps {
+                deleteDir()
+            }
         }
         stage ('Checkout') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
         stage('build war') {
             agent {
