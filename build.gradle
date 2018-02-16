@@ -1,12 +1,9 @@
 group 'se.munhunger'
 version '0.1'
 
-plugins {
-    id "org.sonarqube" version "2.6"
-}
-
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'org.sonarqube'
 
 sourceCompatibility = 1.8
 
