@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    properties([
+        pipelineTriggers([[$class:"SCMTrigger", scmpoll_spec:"H/2 * * * *"]]),
+    ])
     stages {
         stage ('Clean') {
             steps {
