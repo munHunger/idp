@@ -1,20 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('github pending status') {
-            steps {
-                script {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '86bc4b4c-e630-4238-b9f4-22270d1077b0',
-                    usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                        sh 'echo uname=$USERNAME pwd=$PASSWORD'
-                        sh 'curl "https://api.github.com/repos/munhunger/idp/statuses/$GIT_COMMIT?access_token=$PASSWORD" \
-                                -H "Content-Type: application/json" \
-                                -X POST \
-                                -d "{\"state\": \"pending\", \"description\": \"Jenkins\", \"target_url\": \"http://my.jenkins.box.com/job/dividata/$BUILD_NUMBER/console\"}"'
-                    }
-                }
-            }
-        }
         stage ('Clean') {
             steps {
                 deleteDir()
@@ -64,6 +50,19 @@ pipeline {
                 }
             }
         }
+        stage('analyze code convention') {
+            agent {
+                docker { 
+                    image 'gradle:latest'
+                    reuseNode true 
+                }
+            }
+            steps {
+                script {
+                    sh 'gradle sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710'
+                }
+            }
+        }
         stage('build dockerimage') {
             steps {
                 script {
@@ -80,21 +79,9 @@ pipeline {
     post {
         failure {
             slackSend(color: '#F00', message: "Build failure: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '86bc4b4c-e630-4238-b9f4-22270d1077b0',
-            usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                sh 'echo uname=$USERNAME pwd=$PASSWORD'
-                sh 'curl "https://api.github.com/repos/munhunger/idp/statuses/$GIT_COMMIT?access_token=$PASSWORD" \
-                        -H "Content-Type: application/json" \
-                        -X POST \
-                        -d "{\"state\": \"failure\", \"description\": \"Jenkins\", \"target_url\": \"http://my.jenkins.box.com/job/dividata/$BUILD_NUMBER/console\"}"'
-            }
         }
         success {
             slackSend(color: '#0F0', message: "Build success: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
-                sh 'curl "https://api.github.com/repos/munhunger/idp/statuses/$GIT_COMMIT?access_token=$PASSWORD" \
-                        -H "Content-Type: application/json" \
-                        -X POST \
-                        -d "{\"state\": \"success\", \"description\": \"Jenkins\", \"target_url\": \"http://my.jenkins.box.com/job/dividata/$BUILD_NUMBER/console\"}"'
         }
     }
 }
