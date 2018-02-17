@@ -51,6 +51,12 @@ pipeline {
             }
         }
         stage('analyze code convention') {
+            agent {
+                docker { 
+                    image 'gradle:latest'
+                    reuseNode true 
+                }
+            }
             steps {
                 script {
                     sh 'gradle sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710'
