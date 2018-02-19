@@ -1,7 +1,5 @@
 package se.munhunger.idp.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import se.munhunger.idp.dao.UserDAO;
 import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.OrphanageException;
@@ -19,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
  * @author Marcus Münger
  */
 public class UserService {
-    private static Logger log = LogManager.getLogger(UserService.class.getName());
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ClientService.class.getName());
 
     @Inject
     private UserDAO userDAO;
@@ -28,7 +26,7 @@ public class UserService {
         log.info(() -> "Creating User: " + user.toString());
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
-            log.warn(() -> "Error could not create User due to invalid email: " + user.getEmail());
+            log.warning(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
         }
         userDAO.createUser(user);
@@ -44,7 +42,7 @@ public class UserService {
         log.info(() -> "Updating user: " + user.toString());
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
-            log.warn(() -> "Error could not create User due to invalid email: " + user.getEmail());
+            log.warning(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
         }
         userDAO.updateUser(user);
@@ -55,7 +53,7 @@ public class UserService {
         log.info(() -> "Deleting user: " + username);
         User user = getUser(username);
         if (user.getClients().size() != 0){
-            log.warn(() -> "Error could not create User due to OrphanException: " + user.getEmail());
+            log.warning(() -> "Error could not create User due to OrphanException: " + user.getEmail());
             throw new OrphanageException();
         }
         userDAO.deleteUser(username);

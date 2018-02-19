@@ -23,7 +23,7 @@ import java.security.NoSuchAlgorithmException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class Client {
-    private static Logger log = LogManager.getLogger(Client.class.getName());
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(Client.class.getName());
 
     @Inject
     private ClientService clientService;
@@ -38,7 +38,7 @@ public class Client {
         try {
             return Response.ok(clientService.getClient(clientname)).build();
         } catch (ClientNotInDatabaseException e) {
-            log.warn(() -> "Error ClientNotInDatabaseException, could not get Client with clientname: " + clientname + " do not exist in DB");
+            log.warning(() -> "Error ClientNotInDatabaseException, could not get Client with clientname: " + clientname + " do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Client do not exist",
                             "Client with clientname: " + clientname + " do not exist in DB")).build();
@@ -54,7 +54,7 @@ public class Client {
         try {
             clientService.createClient(client, username);
         } catch (UserNotInDatabaseException e) {
-            log.warn(() -> "Error UserNotInDatabaseException, could not create Client with client: " + client.toString() + " and username: " + username + ". User do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not create Client with client: " + client.toString() + " and username: " + username + ". User do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created due to user do not exist"))
                     .build();
@@ -70,7 +70,7 @@ public class Client {
         try {
             clientService.updateClient(client);
         } catch (ClientNotInDatabaseException e) {
-            log.warn(() -> "Error ClientNotInDatabaseException, could not update Client with client: " + client.toString() + " client do not exist in DB");
+            log.warning(() -> "Error ClientNotInDatabaseException, could not update Client with client: " + client.toString() + " client do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update client", "Client with clientname: " + client.getName() + " could not be updated"))
                     .build();
@@ -87,12 +87,12 @@ public class Client {
         try {
             clientService.deleteClient(clientname, username);
         } catch (ClientNotInDatabaseException e) {
-            log.warn(() -> "Error ClientNotInDatabaseException, could not delete Client with clientname: " + clientname + " and username: " + username + ". Client do not exist in DB");
+            log.warning(() -> "Error ClientNotInDatabaseException, could not delete Client with clientname: " + clientname + " and username: " + username + ". Client do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to the client do not exist"))
                     .build();
         } catch (UserNotInDatabaseException e) {
-            log.warn(() -> "Error UserNotInDatabaseException, could not delete Client with clientname: " + clientname + " and username: " + username + ". User do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not delete Client with clientname: " + clientname + " and username: " + username + ". User do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to user do not exist"))
                     .build();

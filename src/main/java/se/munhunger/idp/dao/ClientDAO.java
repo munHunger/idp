@@ -1,7 +1,5 @@
 package se.munhunger.idp.dao;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import se.munhunger.idp.exception.ClientNotInDatabaseException;
 import se.munhunger.idp.model.persistant.Client;
@@ -9,14 +7,14 @@ import se.munhunger.idp.model.persistant.Client;
 import java.util.Optional;
 
 public class ClientDAO extends DatabaseDAO {
-    private static Logger log = LogManager.getLogger(ClientDAO.class.getName());
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ClientDAO.class.getName());
 
     public Optional<Client> getClient(String clientname) {
         try(Session session = sessionFactory.openSession()) {
             log.info(() -> "Getting Client: " + clientname);
             Client client = session.get(Client.class, clientname);
             if(client == null) {
-                log.warn(() -> "Error client with clientname: " + clientname + " do not exist");
+                log.warning(() -> "Error client with clientname: " + clientname + " do not exist");
                 return Optional.empty();
             }
             log.info(() -> "Getting Client: " + clientname + " Successful");

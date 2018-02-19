@@ -1,7 +1,5 @@
 package se.munhunger.idp.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import se.munhunger.idp.dao.ClientDAO;
 import se.munhunger.idp.exception.ClientNotInDatabaseException;
 import se.munhunger.idp.exception.EmailNotValidException;
@@ -11,13 +9,11 @@ import se.munhunger.idp.model.persistant.User;
 
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ClientService {
-    private static Logger log = LogManager.getLogger(ClientService.class.getName());
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ClientService.class.getName());
 
     @Inject
     private ClientDAO clientDAO;
@@ -36,9 +32,9 @@ public class ClientService {
         try {
             userService.updateUser(user);
         } catch (NoSuchAlgorithmException e) {
-            log.fatal(() -> "Error NoSuchAlgorithmException Client: " + client.toString() + " with parent user " + username + ". Password could not be processed");
+            log.severe(() -> "Error NoSuchAlgorithmException Client: " + client.toString() + " with parent user " + username + ". Password could not be processed");
         } catch (EmailNotValidException e) {
-            log.fatal(() -> "Error EmailNotValidException Client: " + client.toString() + " with parent user " + username + ". Email is not valid");
+            log.severe(() -> "Error EmailNotValidException Client: " + client.toString() + " with parent user " + username + ". Email is not valid");
         }
     }
 
@@ -63,9 +59,9 @@ public class ClientService {
         try {
             userService.updateUser(user);
         } catch (NoSuchAlgorithmException e) {
-            log.fatal(() -> "Error NoSuchAlgorithmException Client: " + clientname + " with parent user " + username + ". Password could not be processed");
+            log.severe(() -> "Error NoSuchAlgorithmException Client: " + clientname + " with parent user " + username + ". Password could not be processed");
         } catch (EmailNotValidException e) {
-            log.fatal(() -> "Error EmailNotValidException Client: " + clientname + " with parent user " + username + ". Email is not valid");
+            log.severe(() -> "Error EmailNotValidException Client: " + clientname + " with parent user " + username + ". Email is not valid");
         }
         clientDAO.deleteClient(clientname);
         log.info(() -> "Deleting Client: " + clientname + " for parent user: " + username + " Successful");

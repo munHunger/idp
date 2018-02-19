@@ -1,11 +1,8 @@
 package se.munhunger.idp.dao;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.persistant.User;
-import se.munhunger.idp.services.ClientService;
 
 import java.util.Optional;
 
@@ -13,14 +10,14 @@ import java.util.Optional;
  * @author Marcus Münger
  */
 public class UserDAO extends DatabaseDAO {
-    private static Logger log = LogManager.getLogger(UserDAO.class.getName());
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(UserDAO.class.getName());
 
     public Optional<User> getUser(String username) {
         log.info(() -> "Getting User: " + username);
         try(Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, username);
             if(user == null) {
-                log.warn(() -> "Error user with username: " + username + " do not exist");
+                log.warning(() -> "Error user with username: " + username + " do not exist");
                 return Optional.empty();
             }
             log.info(() -> "Getting User: " + username + " Successful");

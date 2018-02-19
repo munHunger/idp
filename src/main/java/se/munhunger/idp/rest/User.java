@@ -27,8 +27,7 @@ import java.security.NoSuchAlgorithmException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class User {
-    private static Logger log = LogManager.getLogger(User.class.getName());
-
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(UserService.class.getName());
     @Inject
     private UserService userService;
 
@@ -42,7 +41,7 @@ public class User {
         try {
             return Response.ok(userService.getUser(username)).build();
         } catch (UserNotInDatabaseException e) {
-            log.warn(() -> "Error UserNotInDatabaseException, could not get User with username: " + username + " do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not get User with username: " + username + " do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("User do not exist",
                             "User with username: " + username + " do not exist in DB")).build();
@@ -57,12 +56,12 @@ public class User {
         try {
             userService.createUser(user);
         } catch (EmailNotValidException e) {
-            log.warn(() -> "Error EmailNotValidException, could not create User: " + user.toString() + " has no valid email");
+            log.warning(() -> "Error EmailNotValidException, could not create User: " + user.toString() + " has no valid email");
             return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            log.warn(() -> "Error NoSuchAlgorithmException, could not create User: " + user.toString() + " could not process password");
+            log.warning(() -> "Error NoSuchAlgorithmException, could not create User: " + user.toString() + " could not process password");
             return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
@@ -78,17 +77,17 @@ public class User {
         try {
             userService.updateUser(user);
         } catch (EmailNotValidException e) {
-            log.warn(() -> "Error EmailNotValidException, could not update User: " + user.toString() + " has no valid email");
+            log.warning(() -> "Error EmailNotValidException, could not update User: " + user.toString() + " has no valid email");
             return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
-            log.warn(() -> "Error NoSuchAlgorithmException, could not update User: " + user.toString() + " could not process password");
+            log.warning(() -> "Error NoSuchAlgorithmException, could not update User: " + user.toString() + " could not process password");
             return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (UserNotInDatabaseException e) {
-            log.warn(() -> "Error UserNotInDatabaseException, could not update User: " + user.toString() + " do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not update User: " + user.toString() + " do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not update user", "User with username: " + user.getUsername() + " does not exist"))
                     .build();
@@ -105,12 +104,12 @@ public class User {
         try {
             userService.deleteUser(username);
         }  catch (UserNotInDatabaseException e) {
-            log.warn(() -> "Error UserNotInDatabaseException, could not delete User: " + username + " do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not delete User: " + username + " do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete user", "User with username: " + username + " does not exist"))
                     .build();
         } catch (OrphanageException e) {
-            log.warn(() -> "Error UserNotInDatabaseException, could not delete User: " + username + " do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not delete User: " + username + " do not exist in DB");
             return Response.status(Response.Status.FORBIDDEN)
                     .entity(new ErrorMessage("Could not delete user", "User cannot be deleted due to the risk of the user clients being orphans"))
                     .build();
