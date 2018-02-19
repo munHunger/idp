@@ -42,3 +42,7 @@ dependencies {
 war {
     destinationDir(file('build/'))
 }
+
+test {
+    reports.junitXml.destination = 'testResults/'
+}

@@ -49,6 +49,7 @@ pipeline {
                         }
                     }
                 }
+                step([$class: 'JUnitResultArchiver', testResults: '**/testResults/*.xml'])
             }
         }
         stage('analyze code convention') {
