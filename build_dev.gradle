@@ -1,0 +1,50 @@
+group 'se.munhunger'
+version '0.1'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'com.mscharhag.oleaster', name: 'oleaster-matcher', version: '0.1.2'
+    testCompile group: 'com.mscharhag.oleaster', name: 'oleaster-runner', version: '0.1.2'
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.7.0'
+    testCompile group: 'org.powermock', name: 'powermock-api-easymock', version: '1.7.0'
+    testCompile group: 'org.easymock', name: 'easymock', version: '3.4'
+
+    compile('io.swagger:swagger-jaxrs:1.5.16') {
+        exclude group: 'javax.ws.rs'
+    }
+
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0-b05'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: '2.25.1'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '2.25.1'
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.25.1'
+
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.25.1'
+
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.39'
+
+    compile 'commons-validator:commons-validator:1.4.1'
+
+}
+
+war {
+    destinationDir(file('build/'))
+}
+
+task deploy (dependsOn: war){
+    copy {
+        from "build/"
+        into "C:/dev/Tools/apache-tomcat-8.5.27-windows-x64/apache-tomcat-8.5.27/webapps"
+        include "*.war"
+    }
+}
