@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
  * @author Marcus Münger
  */
 public class UserService {
-    final static Logger log = LogManager.getLogger(UserService.class.getName());
+    private static Logger log = LogManager.getLogger(UserService.class.getName());
 
     @Inject
     private UserDAO userDAO;
