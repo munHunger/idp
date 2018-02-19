@@ -55,12 +55,12 @@ public class Client {
             clientService.createClient(client, username);
         } catch (EmailNotValidException e) {
             log.warn(() -> "Error EmailNotValidException, could not create Client with client: " + client.toString() + " and username: " + username + ". Email for user is invalid");
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created due to user email is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warn(() -> "Error NoSuchAlgorithmException, could not create Client with client: " + client.toString() + " and username: " + username + ". Password user can not processed");
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not create client", "Client with clientname: " + client.getName() + " could not be created due to password could not be processed correctly"))
                     .build();
         } catch (UserNotInDatabaseException e) {
@@ -103,12 +103,12 @@ public class Client {
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warn(() -> "Error NoSuchAlgorithmException, could not delete Client with clientname: " + clientname + " and username: " + username + ". Password for user could not be processed");
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to password could not be processed correctly"))
                     .build();
         } catch (EmailNotValidException e) {
             log.warn(() -> "Error EmailNotValidException, could not delete Client with clientname: " + clientname + " and username: " + username + ". Email for user is not valid");
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to user email is not valid"))
                     .build();
         } catch (UserNotInDatabaseException e) {
