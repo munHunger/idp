@@ -25,15 +25,21 @@ public class ClientService {
     @Inject
     private UserService userService;
 
-    public void createClient(Client client, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException {
+    public void createClient(Client client, String username) throws UserNotInDatabaseException {
         log.info(() -> "Creating Client: " + client.toString() + " with parent user: " + username);
         List clientList;
         User user = userService.getUser(username);
         clientList = user.getClients();
         clientList.add(client);
         user.setClients(clientList);
-        userService.updateUser(user);
         log.info(() -> "Creating Client: " + client.toString() + " with parent user " + username + " Successful");
+        try {
+            userService.updateUser(user);
+        } catch (NoSuchAlgorithmException e) {
+            log.fatal(() -> "Error NoSuchAlgorithmException Client: " + client.toString() + " with parent user " + username + ". Password could not be processed");
+        } catch (EmailNotValidException e) {
+            log.fatal(() -> "Error EmailNotValidException Client: " + client.toString() + " with parent user " + username + ". Email is not valid");
+        }
     }
 
     public Client getClient(String clientname) throws ClientNotInDatabaseException {
@@ -46,7 +52,7 @@ public class ClientService {
         clientDAO.updateClient(client);
     }
 
-    public void deleteClient(String clientname, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException, ClientNotInDatabaseException {
+    public void deleteClient(String clientname, String username) throws UserNotInDatabaseException, ClientNotInDatabaseException {
         log.info(() -> "Deleting Client: " + clientname + " for parent user: " + username);
         User user = null;
         user = userService.getUser(username);
@@ -54,7 +60,13 @@ public class ClientService {
                 .filter(c -> !c.getName().equals(clientname))
                 .collect(Collectors.toList());
         user.setClients(filteredClients);
-        userService.updateUser(user);
+        try {
+            userService.updateUser(user);
+        } catch (NoSuchAlgorithmException e) {
+            log.fatal(() -> "Error NoSuchAlgorithmException Client: " + clientname + " with parent user " + username + ". Password could not be processed");
+        } catch (EmailNotValidException e) {
+            log.fatal(() -> "Error EmailNotValidException Client: " + clientname + " with parent user " + username + ". Email is not valid");
+        }
         clientDAO.deleteClient(clientname);
         log.info(() -> "Deleting Client: " + clientname + " for parent user: " + username + " Successful");
     }
