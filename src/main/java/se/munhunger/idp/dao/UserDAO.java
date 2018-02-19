@@ -30,23 +30,23 @@ public class UserDAO extends DatabaseDAO {
 
     public void createUser(User user) {
         try(Session session = sessionFactory.openSession()) {
-            log.info(() -> "Creating User: " + user.getUsername());
+            log.info(() -> "Creating User: " + user.toString());
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
-            log.info(() -> "Creating User: " + user.getUsername() + " Succcessful");
+            log.info(() -> "Creating User: " + user.toString() + " Succcessful");
         }
     }
 
     public void updateUser(User user) throws UserNotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            log.info(() -> "Updating User: " + user.getUsername());
+            log.info(() -> "Updating User: " + user.toString());
             Optional<User> updateUser = getUser(user.getUsername());
             updateUser.orElseThrow(UserNotInDatabaseException::new);
             session.beginTransaction();
             session.update(user);
             session.getTransaction().commit();
-            log.info(() -> "Updating User: " + user.getUsername() + " Successful");
+            log.info(() -> "Updating User: " + user.toString() + " Successful");
         }
     }
 
