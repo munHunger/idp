@@ -26,23 +26,23 @@ public class ClientDAO extends DatabaseDAO {
 
     public void createClient(Client client) {
         try(Session session = sessionFactory.openSession()) {
-            log.info(() -> "Creating Client: " + client.getName());
+            log.info(() -> "Creating Client: " + client.toString());
             session.beginTransaction();
             session.save(client);
             session.getTransaction().commit();
-            log.info(() -> "Creating Client: " + client.getName() + " Successful");
+            log.info(() -> "Creating Client: " + client.toString() + " Successful");
         }
     }
 
     public void updateClient(Client client) throws ClientNotInDatabaseException {
         try(Session session = sessionFactory.openSession()) {
-            log.info(() -> "Updating Client: " + client.getName());
+            log.info(() -> "Updating Client: " + client.toString());
             Optional<Client> updateClient = getClient(client.getName());
             updateClient.orElseThrow(ClientNotInDatabaseException::new);
             session.beginTransaction();
             session.update(client);
             session.getTransaction().commit();
-            log.info(() -> "Updating Client: " + client.getName() + " Successful");
+            log.info(() -> "Updating Client: " + client.toString() + " Successful");
         }
     }
 
