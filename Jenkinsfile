@@ -61,7 +61,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'gradle sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710'
+                    sh "gradle sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710 -Dsonar.branch.name=${env.BRANCH_NAME}"
                 }
             }
         }
@@ -80,7 +80,7 @@ pipeline {
     }
     post {
         failure {
-            slackSend(color: '#F00', message: "Build failure: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL}", attachments: "/testResults/*")
+            slackSend(color: '#F00', message: "Build failure: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
         }
         success {
             slackSend(color: '#0F0', message: "Build success: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
