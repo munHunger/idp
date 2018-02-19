@@ -25,7 +25,6 @@ public class Client {
     @Column(name = "creationdate", length = 100, updatable = false, nullable = false)
     @CreationTimestamp
     private Date creationdate;
-
     public Client() {
     }
 
@@ -50,5 +49,4 @@ public class Client {
     public Date getCreationdate() {
         return creationdate;
     }
-
 }
