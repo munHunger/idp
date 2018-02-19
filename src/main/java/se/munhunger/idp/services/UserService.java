@@ -28,7 +28,7 @@ public class UserService {
         log.info(() -> "Creating User: " + user.toString());
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
-            log.error(() -> "Error could not create User due to invalid email: " + user.getEmail());
+            log.warn(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
         }
         userDAO.createUser(user);
@@ -44,7 +44,7 @@ public class UserService {
         log.info(() -> "Updating user: " + user.getUsername());
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
-            log.error(() -> "Error could not create User due to invalid email: " + user.getEmail());
+            log.warn(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
         }
         userDAO.updateUser(user);
@@ -55,7 +55,7 @@ public class UserService {
         log.info(() -> "Deleting user: " + username);
         User user = getUser(username);
         if (user.getClients().size() != 0){
-            log.error(() -> "Error could not create User due to OrphanException: " + user.getEmail());
+            log.warn(() -> "Error could not create User due to OrphanException: " + user.getEmail());
             throw new OrphanageException();
         }
         userDAO.deleteUser(username);
