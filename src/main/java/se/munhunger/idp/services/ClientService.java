@@ -26,14 +26,14 @@ public class ClientService {
     private UserService userService;
 
     public void createClient(Client client, String username) throws UserNotInDatabaseException, EmailNotValidException, NoSuchAlgorithmException {
-        log.info(() -> "Creating Client: " + client.getName() + " with parent user: " + username);
+        log.info(() -> "Creating Client: " + client.toString() + " with parent user: " + username);
         List clientList;
         User user = userService.getUser(username);
         clientList = user.getClients();
         clientList.add(client);
         user.setClients(clientList);
         userService.updateUser(user);
-        log.info(() -> "Creating Client: " + client.getName() + " with parent user " + username + " Successful");
+        log.info(() -> "Creating Client: " + client.toString() + " with parent user " + username + " Successful");
     }
 
     public Client getClient(String clientname) throws ClientNotInDatabaseException {
@@ -42,7 +42,7 @@ public class ClientService {
     }
 
     public void updateClient(Client client) throws ClientNotInDatabaseException {
-        log.info(() -> "Updating Client: " + client.getName());
+        log.info(() -> "Updating Client: " + client.toString());
         clientDAO.updateClient(client);
     }
 

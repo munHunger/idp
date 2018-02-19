@@ -41,14 +41,14 @@ public class UserService {
     }
 
     public void updateUser(User user) throws NoSuchAlgorithmException, UserNotInDatabaseException, EmailNotValidException {
-        log.info(() -> "Updating user: " + user.getUsername());
+        log.info(() -> "Updating user: " + user.toString());
         user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
             log.warn(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
         }
         userDAO.updateUser(user);
-        log.info(() -> "Updating user: " + user.getUsername() + " Successful");
+        log.info(() -> "Updating user: " + user.toString() + " Successful");
     }
 
     public void deleteUser(String username) throws UserNotInDatabaseException, OrphanageException {
