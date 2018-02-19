@@ -2,8 +2,12 @@ package se.munhunger.idp.model.persistant;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -18,8 +22,8 @@ public class Client {
     @Column(name = "description", length = 600)
     private String description;
     @ApiModelProperty(value = "creationdate")
-    @Column(name = "creationdate", length = 100)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "creationdate", length = 100, updatable = false, nullable = false)
+    @CreationTimestamp
     private Date creationdate;
     public Client() {
     }

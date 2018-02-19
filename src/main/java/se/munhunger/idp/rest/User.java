@@ -3,9 +3,6 @@ package se.munhunger.idp.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import se.munhunger.idp.dao.DatabaseDAO;
 import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.OrphanageException;
 import se.munhunger.idp.exception.UserNotInDatabaseException;
@@ -28,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 @Produces(MediaType.APPLICATION_JSON)
 public class User {
     private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(UserService.class.getName());
+
     @Inject
     private UserService userService;
 

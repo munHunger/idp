@@ -1,5 +1,6 @@
 package se.munhunger.idp.model.persistant;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @ApiModel(description = "A user")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     @Id
     @Column(name = "username", length = 64)
@@ -20,7 +22,7 @@ public class User {
     private String username;
     @ApiModelProperty(value = "A SHA-256 hashed password")
     @Column(name = "password", length = 128)
-    private String hashPassword;
+    private String password;
     @ApiModelProperty(value = "The users firstname")
     @Column(name = "firstname", length = 128)
     private String firstname;
@@ -40,14 +42,14 @@ public class User {
 
     }
 
-    public User(String username, String hashPassword) {
+    public User(String username, String password) {
         this.username = username;
-        this.hashPassword = hashPassword;
+        this.password = password;
     }
 
-    public User(String username, String hashPassword, String firstname, String lastname, String email) {
+    public User(String username, String password, String firstname, String lastname, String email) {
         this.username = username;
-        this.hashPassword = hashPassword;
+        this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -57,12 +59,12 @@ public class User {
         return username;
     }
 
-    public String getHashPassword() {
-        return hashPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHashPassword(String hashPassword) {
-        this.hashPassword = hashPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstname() {

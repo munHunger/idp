@@ -11,8 +11,6 @@ import se.munhunger.idp.util.HashPass;
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
 
-
-
 /**
  * @author Marcus Münger
  */
@@ -24,7 +22,7 @@ public class UserService {
 
     public void createUser(User user) throws NoSuchAlgorithmException, EmailNotValidException {
         log.info(() -> "Creating User: " + user.toString());
-        user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
+        user.setPassword(HashPass.hashPassword(user.getPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
             log.warning(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
@@ -40,7 +38,7 @@ public class UserService {
 
     public void updateUser(User user) throws NoSuchAlgorithmException, UserNotInDatabaseException, EmailNotValidException {
         log.info(() -> "Updating user: " + user.toString());
-        user.setHashPassword(HashPass.hashPassword(user.getHashPassword()));
+        user.setPassword(HashPass.hashPassword(user.getPassword()));
         if (!EmailValidation.isValidEmailAddress(user.getEmail())) {
             log.warning(() -> "Error could not create User due to invalid email: " + user.getEmail());
             throw new EmailNotValidException();
