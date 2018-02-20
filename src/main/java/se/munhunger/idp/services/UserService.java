@@ -51,7 +51,7 @@ public class UserService {
     public void deleteUser(String username) throws UserNotInDatabaseException, OrphanageException {
         log.info(() -> "Deleting user: " + username);
         User user = getUser(username);
-        if (user.getClients().size() != 0){
+        if (user.getClients().isEmpty()){
             log.warning(() -> "Error could not create User due to OrphanException: " + user.getEmail());
             throw new OrphanageException();
         }
