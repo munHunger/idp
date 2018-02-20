@@ -62,7 +62,7 @@ public class UserTest {
                     user.put("username", "username");
                     user.put("password", "password");
                     user.put("email", "mail.com");
-                    Assert.assertEquals(500,
+                    Assert.assertEquals(400,
                                         client.target(baseURL + "/api/user")
                                               .request()
                                               .post(Entity.json(user))
@@ -102,7 +102,7 @@ public class UserTest {
                     user.put("username", "username");
                     user.put("password", "password");
                     user.put("email", "mail.com");
-                    Assert.assertEquals(500,
+                    Assert.assertEquals(400,
                                         client.target(baseURL + "/api/user")
                                               .request()
                                               .put(Entity.json(user))
@@ -114,7 +114,7 @@ public class UserTest {
                     user.put("username", "username2");
                     user.put("password", "password");
                     user.put("email", "mail.com");
-                    Assert.assertEquals(500,
+                    Assert.assertEquals(400,
                                         client.target(baseURL + "/api/user")
                                               .request()
                                               .put(Entity.json(user))
