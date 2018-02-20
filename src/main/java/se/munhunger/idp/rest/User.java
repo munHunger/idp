@@ -56,12 +56,12 @@ public class User {
             userService.createUser(user);
         } catch (EmailNotValidException e) {
             log.warning(() -> "Error EmailNotValidException, could not create User: " + user.toString() + " has no valid email");
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
+            return Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warning(() -> "Error NoSuchAlgorithmException, could not create User: " + user.toString() + " could not process password");
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
+            return Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
         }
@@ -77,12 +77,12 @@ public class User {
             userService.updateUser(user);
         } catch (EmailNotValidException e) {
             log.warning(() -> "Error EmailNotValidException, could not update User: " + user.toString() + " has no valid email");
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
+            return Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warning(() -> "Error NoSuchAlgorithmException, could not update User: " + user.toString() + " could not process password");
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
+            return Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (UserNotInDatabaseException e) {
