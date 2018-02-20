@@ -23,9 +23,8 @@ public class ClientService {
 
     public void createClient(Client client, String username) throws UserNotInDatabaseException {
         log.info(() -> "Creating Client: " + client.toString() + " with parent user: " + username);
-        List clientList;
         User user = userService.getUser(username);
-        clientList = user.getClients();
+        List<Client> clientList = user.getClients();
         clientList.add(client);
         user.setClients(clientList);
         log.info(() -> "Creating Client: " + client.toString() + " with parent user " + username + " Successful");
@@ -50,8 +49,7 @@ public class ClientService {
 
     public void deleteClient(String clientname, String username) throws UserNotInDatabaseException, ClientNotInDatabaseException {
         log.info(() -> "Deleting Client: " + clientname + " for parent user: " + username);
-        User user = null;
-        user = userService.getUser(username);
+        User user = userService.getUser(username);
         List<Client> filteredClients = user.getClients().stream()
                 .filter(c -> !c.getName().equals(clientname))
                 .collect(Collectors.toList());
