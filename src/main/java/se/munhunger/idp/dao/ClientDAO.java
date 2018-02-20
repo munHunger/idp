@@ -5,9 +5,10 @@ import se.munhunger.idp.exception.ClientNotInDatabaseException;
 import se.munhunger.idp.model.persistant.Client;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class ClientDAO extends DatabaseDAO {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ClientDAO.class.getName());
+    private static Logger log = Logger.getLogger(ClientDAO.class.getName());
 
     public Optional<Client> getClient(String clientname) {
         try(Session session = sessionFactory.openSession()) {

@@ -5,12 +5,13 @@ import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.persistant.User;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * @author Marcus Münger
  */
 public class UserDAO extends DatabaseDAO {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(UserDAO.class.getName());
+    private static Logger log = Logger.getLogger(UserDAO.class.getName());
 
     public Optional<User> getUser(String username) {
         log.info(() -> "Getting User: " + username);
