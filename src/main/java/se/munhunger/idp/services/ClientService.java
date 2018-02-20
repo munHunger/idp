@@ -48,21 +48,23 @@ public class ClientService {
         clientDAO.updateClient(client);
     }
 
-    public void deleteClient(String clientname, String username) throws UserNotInDatabaseException, ClientNotInDatabaseException {
-        log.info(() -> "Deleting Client: " + clientname + " for parent user: " + username);
-        User user = userService.getUser(username);
-        List<Client> filteredClients = user.getClients().stream()
-                .filter(c -> !c.getName().equals(clientname))
-                .collect(Collectors.toList());
-        user.setClients(filteredClients);
+    public void deleteClient(String clientname) throws UserNotInDatabaseException, ClientNotInDatabaseException {
+        log.info(() -> "Deleting Client: " + clientname);
+        List<User> userList = userService.findUserByClient(clientname);
         try {
+        for (User user : userList) {
+            List<Client> filteredClients = user.getClients().stream()
+                    .filter(c -> !c.getName().equals(clientname))
+                    .collect(Collectors.toList());
+            user.setClients(filteredClients);
             userService.updateUser(user);
+        }
         } catch (NoSuchAlgorithmException e) {
-            log.severe(() -> "Error NoSuchAlgorithmException Client: " + clientname + " with parent user " + username + ". Password could not be processed");
+            log.severe(() -> "Error NoSuchAlgorithmException Client: " + clientname);
         } catch (EmailNotValidException e) {
-            log.severe(() -> "Error EmailNotValidException Client: " + clientname + " with parent user " + username + ". Email is not valid");
+            log.severe(() -> "Error EmailNotValidException Client: " + clientname);
         }
         clientDAO.deleteClient(clientname);
-        log.info(() -> "Deleting Client: " + clientname + " for parent user: " + username + " Successful");
+        log.info(() -> "Deleting Client: " + clientname);
     }
 }

@@ -4,6 +4,9 @@ import org.hibernate.Session;
 import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.persistant.User;
 
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -56,6 +59,21 @@ public class UserDAO extends DatabaseDAO {
             session.delete(user.orElseThrow(UserNotInDatabaseException::new));
             session.getTransaction().commit();
             log.info(() -> "Updating User: " + username + " Successful");
+        }
+    }
+
+    public List<User> findUserByClient(String clientname){
+        log.info(() -> "Getting User/s for client: " + clientname );
+        try(Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("select u from User u join u.clients c where c.id = :id");
+            List<User> userList = query.setParameter("id", clientname).getResultList();
+            //List<User> userList = query.getResultList();
+            if(userList == null) {
+                log.warning(() -> "Error User/s for Client: " + clientname + " do not exist");
+                return new ArrayList<>();
+            }
+            log.info(() -> "Getting User/s for client: " + clientname + " Successful");
+            return userList;
         }
     }
 }

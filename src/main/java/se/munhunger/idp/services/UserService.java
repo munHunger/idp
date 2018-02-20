@@ -10,6 +10,8 @@ import se.munhunger.idp.util.HashPass;
 
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -57,5 +59,10 @@ public class UserService {
         }
         userDAO.deleteUser(username);
         log.info(() -> "Deleting user: " + username + " Successful");
+    }
+
+    public List<User> findUserByClient(String clientname) throws UserNotInDatabaseException {
+        log.info(() -> "Getting User/s for client: " + clientname );
+         return Optional.ofNullable(userDAO.findUserByClient(clientname)).orElseThrow(UserNotInDatabaseException::new);
     }
 }

@@ -79,17 +79,17 @@ public class Client {
     @Path("/{clientname}/{username}")
     @ApiOperation(value = "Deletes a client in the DB")
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The client was deleted")
-    public Response deleteClient(@PathParam("clientname") String clientname,@PathParam("username") String username) {
-        log.info(() -> "RestService DELETE deleteClient called, with PathParam: " + clientname + " and Pathparam: " + username);
+    public Response deleteClient(@PathParam("clientname") String clientname) {
+        log.info(() -> "RestService DELETE deleteClient called, with PathParam: " + clientname);
         try {
-            clientService.deleteClient(clientname, username);
+            clientService.deleteClient(clientname);
         } catch (ClientNotInDatabaseException e) {
-            log.warning(() -> "Error ClientNotInDatabaseException, could not delete Client with clientname: " + clientname + " and username: " + username + ". Client do not exist in DB");
+            log.warning(() -> "Error ClientNotInDatabaseException, could not delete Client with clientname: " + clientname + ". Client do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to the client do not exist"))
                     .build();
         } catch (UserNotInDatabaseException e) {
-            log.warning(() -> "Error UserNotInDatabaseException, could not delete Client with clientname: " + clientname + " and username: " + username + ". User do not exist in DB");
+            log.warning(() -> "Error UserNotInDatabaseException, could not delete Client with clientname: " + clientname + ". User for this client do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Could not delete client", "Client with clientname: " + clientname + " could not be deleted due to user do not exist"))
                     .build();
