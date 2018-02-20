@@ -3,10 +3,7 @@ package se.munhunger.idp.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import se.munhunger.idp.exception.ClientNotInDatabaseException;
-import se.munhunger.idp.exception.EmailNotValidException;
 import se.munhunger.idp.exception.UserNotInDatabaseException;
 import se.munhunger.idp.model.ErrorMessage;
 import se.munhunger.idp.services.ClientService;
@@ -16,14 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 @Api(value = "Client management")
 @Path("/client")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class Client {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(Client.class.getName());
+    private static Logger log = Logger.getLogger(Client.class.getName());
 
     @Inject
     private ClientService clientService;

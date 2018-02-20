@@ -10,10 +10,11 @@ import se.munhunger.idp.model.persistant.User;
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ClientService {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ClientService.class.getName());
+    private static Logger log = Logger.getLogger(ClientService.class.getName());
 
     @Inject
     private ClientDAO clientDAO;

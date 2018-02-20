@@ -15,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * @author Marcus Münger
@@ -24,7 +25,7 @@ import java.security.NoSuchAlgorithmException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class User {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(UserService.class.getName());
+    private static Logger log = Logger.getLogger(UserService.class.getName());
 
     @Inject
     private UserService userService;

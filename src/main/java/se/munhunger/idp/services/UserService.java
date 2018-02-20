@@ -10,12 +10,13 @@ import se.munhunger.idp.util.HashPass;
 
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * @author Marcus Münger
  */
 public class UserService {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ClientService.class.getName());
+    private static Logger log = Logger.getLogger(ClientService.class.getName());
 
     @Inject
     private UserDAO userDAO;
