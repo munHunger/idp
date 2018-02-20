@@ -56,12 +56,12 @@ public class User {
             userService.createUser(user);
         } catch (EmailNotValidException e) {
             log.warning(() -> "Error EmailNotValidException, could not create User: " + user.toString() + " has no valid email");
-            return Response.status(Response.Status.EXPECTATION_FAILED)
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(new ErrorMessage("Could not create user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warning(() -> "Error NoSuchAlgorithmException, could not create User: " + user.toString() + " could not process password");
-            return Response.status(Response.Status.EXPECTATION_FAILED)
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
         }
@@ -77,12 +77,12 @@ public class User {
             userService.updateUser(user);
         } catch (EmailNotValidException e) {
             log.warning(() -> "Error EmailNotValidException, could not update User: " + user.toString() + " has no valid email");
-            return Response.status(Response.Status.EXPECTATION_FAILED)
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(new ErrorMessage("Could not update user", "User with email: " + user.getEmail() + " is not valid"))
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warning(() -> "Error NoSuchAlgorithmException, could not update User: " + user.toString() + " could not process password");
-            return Response.status(Response.Status.EXPECTATION_FAILED)
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (UserNotInDatabaseException e) {
@@ -109,7 +109,7 @@ public class User {
                     .build();
         } catch (OrphanageException e) {
             log.warning(() -> "Error UserNotInDatabaseException, could not delete User: " + username + " do not exist in DB");
-            return Response.status(Response.Status.FORBIDDEN)
+            return Response.status(Response.Status.CONFLICT)
                     .entity(new ErrorMessage("Could not delete user", "User cannot be deleted due to the risk of the user clients being orphans"))
                     .build();
         }
