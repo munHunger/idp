@@ -98,4 +98,16 @@ public class User {
     public void setClients(List<Client> clients) {
         this.clients = clients;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", clients=" + clients +
+                '}';
+    }
 }

@@ -49,4 +49,13 @@ public class Client {
     public Date getCreationdate() {
         return creationdate;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", creationdate=" + creationdate +
+                '}';
+    }
 }
