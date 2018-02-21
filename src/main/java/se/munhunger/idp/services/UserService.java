@@ -61,8 +61,8 @@ public class UserService {
         log.info(() -> "Deleting user: " + username + " Successful");
     }
 
-    public List<User> findUserByClient(String clientname) throws UserNotInDatabaseException {
+    public User findUserByClient(String clientname) throws UserNotInDatabaseException {
         log.info(() -> "Getting User/s for client: " + clientname );
-         return Optional.ofNullable(userDAO.findUserByClient(clientname)).orElseThrow(UserNotInDatabaseException::new);
+         return userDAO.findUserByClient(clientname).orElseThrow(UserNotInDatabaseException::new);
     }
 }

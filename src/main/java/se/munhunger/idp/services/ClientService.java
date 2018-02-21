@@ -49,15 +49,13 @@ public class ClientService {
 
     public void deleteClient(String clientname) throws UserNotInDatabaseException, ClientNotInDatabaseException {
         log.info(() -> "Deleting Client: " + clientname);
-        List<User> userList = userService.findUserByClient(clientname);
+        User user = userService.findUserByClient(clientname);
         try {
-        for (User user : userList) {
             List<Client> filteredClients = user.getClients().stream()
                     .filter(c -> !c.getName().equals(clientname))
                     .collect(Collectors.toList());
             user.setClients(filteredClients);
             userService.updateUser(user);
-        }
         } catch (NoSuchAlgorithmException e) {
             log.severe(() -> "Error NoSuchAlgorithmException Client: " + clientname);
         } catch (EmailNotValidException e) {
