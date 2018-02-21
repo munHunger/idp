@@ -20,7 +20,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'gradle war'
+                sh 'gradle war -b build_jenkins.gradle'
                 sh 'ls build'
             }
         }
@@ -39,7 +39,7 @@ pipeline {
                             }
                             try {
                                 docker.image('gradle:latest').inside("--link ${backend.id}:backend -e 'IDP_URL=http://backend:8080'") {
-                                    sh 'gradle test -i'
+                                    sh 'gradle test -i -b build_jenkins.gradle'
                                 }
                             }
                             catch (exc) {
@@ -60,7 +60,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'gradle sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710'
+                    sh 'gradle -b build_jenkins.gradle sonarqube -Dsonar.organization=munhunger-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26f034126050250c874ef2220dc47ef9245c0710'
                 }
             }
         }

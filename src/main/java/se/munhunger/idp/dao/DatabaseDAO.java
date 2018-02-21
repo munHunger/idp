@@ -33,7 +33,7 @@ public class DatabaseDAO {
             configMap.put("hibernate.connection.password", pass);
         }
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().applySettings(configMap)
-                                                                                     .build();
+                .build();
         Configuration config = new Configuration();
 
 

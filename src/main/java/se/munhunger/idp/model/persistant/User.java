@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Marcus Münger
@@ -33,6 +32,12 @@ public class User {
     @ApiModelProperty(value = "The users email")
     @Column(name = "email", length = 128)
     private String email;
+    @ApiModelProperty(value = "The list of user clients")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_clients",
+    joinColumns = {@JoinColumn(name = "user_name")},
+    inverseJoinColumns = {@JoinColumn(name = "client_name")})
+    private List<Client> clients = new ArrayList<>();
     public User () {
 
     }
@@ -86,4 +91,22 @@ public class User {
         this.email = email;
     }
 
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", clients=" + clients +
+                '}';
+    }
 }

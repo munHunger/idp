@@ -25,7 +25,6 @@ public class Client {
     @Column(name = "creationdate", length = 100, updatable = false, nullable = false)
     @CreationTimestamp
     private Date creationdate;
-
     public Client() {
     }
 
@@ -51,4 +50,12 @@ public class Client {
         return creationdate;
     }
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", creationdate=" + creationdate +
+                '}';
+    }
 }
