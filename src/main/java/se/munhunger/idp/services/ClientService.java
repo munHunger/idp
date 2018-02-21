@@ -27,7 +27,6 @@ public class ClientService {
         User user = userService.getUser(username);
         List<Client> clientList = user.getClients();
         clientList.add(client);
-        user.setClients(clientList);
         log.info(() -> "Creating Client: " + client.toString() + " with parent user " + username + " Successful");
         try {
             userService.updateUser(user);
