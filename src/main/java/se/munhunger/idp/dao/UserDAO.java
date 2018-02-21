@@ -67,7 +67,7 @@ public class UserDAO extends DatabaseDAO {
         try(Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("select u from User u join u.clients c where c.id = :id");
             List<User> user = query.setParameter("id", clientname).getResultList();
-            if(user == null) {
+            if(user == null || user.isEmpty()) {
                 log.warning(() -> "Error User/s for Client: " + clientname + " do not exist");
                 return Optional.empty();
             }
