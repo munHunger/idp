@@ -76,7 +76,7 @@ public class Client {
     }
 
     @DELETE
-    @Path("/{clientname}/{username}")
+    @Path("/{clientname}")
     @ApiOperation(value = "Deletes a client in the DB")
     @ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "The client was deleted")
     public Response deleteClient(@PathParam("clientname") String clientname) {
