@@ -61,7 +61,7 @@ public class User {
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warning(() -> "Error NoSuchAlgorithmException, could not create User: " + user.toString() + " could not process password");
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new ErrorMessage("Could not create user", "Could not process password"))
                     .build();
         }
@@ -82,7 +82,7 @@ public class User {
                     .build();
         } catch (NoSuchAlgorithmException e) {
             log.warning(() -> "Error NoSuchAlgorithmException, could not update User: " + user.toString() + " could not process password");
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new ErrorMessage("Could not update user", "Could not process password"))
                     .build();
         } catch (UserNotInDatabaseException e) {
