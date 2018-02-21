@@ -10,8 +10,6 @@ import se.munhunger.idp.util.HashPass;
 
 import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -53,7 +51,7 @@ public class UserService {
     public void deleteUser(String username) throws UserNotInDatabaseException, OrphanageException {
         log.info(() -> "Deleting user: " + username);
         User user = getUser(username);
-        if (user.getClients().isEmpty()){
+        if (user.getClients().isEmpty()) {
             log.warning(() -> "Error could not create User due to OrphanException: " + user.getEmail());
             throw new OrphanageException();
         }
@@ -62,7 +60,7 @@ public class UserService {
     }
 
     public User findUserByClient(String clientname) throws UserNotInDatabaseException {
-        log.info(() -> "Getting User/s for client: " + clientname );
-         return userDAO.findUserByClient(clientname).orElseThrow(UserNotInDatabaseException::new);
+        log.info(() -> "Getting User/s for client: " + clientname);
+        return userDAO.findUserByClient(clientname).orElseThrow(UserNotInDatabaseException::new);
     }
 }
