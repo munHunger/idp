@@ -47,9 +47,14 @@ public class ClientService {
         clientDAO.updateClient(client);
     }
 
+    public User findUserByClient(String clientname) throws UserNotInDatabaseException {
+        log.info(() -> "Finding User by Clientname: " + clientname);
+        return userService.findUserByClient(clientname);
+    }
+
     public void deleteClient(String clientname) throws UserNotInDatabaseException, ClientNotInDatabaseException {
         log.info(() -> "Deleting Client: " + clientname);
-        User user = userService.findUserByClient(clientname);
+        User user = findUserByClient(clientname);
         try {
             List<Client> filteredClients = user.getClients().stream()
                     .filter(c -> !c.getName().equals(clientname))
