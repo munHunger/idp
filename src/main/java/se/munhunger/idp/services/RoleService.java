@@ -30,9 +30,9 @@ public class RoleService {
         }
     }
 
-    public Role getRole(Long roleId) throws RoleNotInDatabaseException {
-        log.info(() -> "Getting Role: " + roleId);
-        return roleDAO.getRole(roleId).orElseThrow(RoleNotInDatabaseException::new);
+    public Role getRole(String username, String clientname) throws RoleNotInDatabaseException {
+        log.info(() -> "Getting Role for client: " + clientname);
+        return roleDAO.getRoleByUserAndClient(username, clientname).orElseThrow(RoleNotInDatabaseException::new);
     }
 
     public void updateRole(Role role) throws RoleNotInDatabaseException {

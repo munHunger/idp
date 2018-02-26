@@ -26,19 +26,19 @@ public class Role {
     private RoleService roleService;
 
     @GET
-    @Path("/{roleId}")
+    @Path("/{username}/{clientname}")
     @ApiOperation(value = "Fetches a role for a specific client from the database")
     @ApiResponse(code = HttpServletResponse.SC_OK, message = "The role identified by the roleId", response = se
             .munhunger.idp.model.persistant.Role.class)
-    public Response getRole(@PathParam("roleId") Long roleId) {
-        log.info(() -> "RestService GET getRole called, with PathParam: " + roleId);
+    public Response getRole(@PathParam("username") String username, @PathParam("clientname") String clientname) {
+        log.info(() -> "RestService GET getRole called, with PathParam clientname: " + clientname);
         try {
-            return Response.ok(roleService.getRole(roleId)).build();
+            return Response.ok(roleService.getRole(username, clientname)).build();
         } catch (RoleNotInDatabaseException e) {
-            log.warning(() -> "Error RoleNotInDatabaseException, could not get Role with role id: " + roleId + " do not exist in DB");
+            log.warning(() -> "Error RoleNotInDatabaseException, could not get Role with clientname: " + clientname + " do not exist in DB");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorMessage("Role do not exist",
-                            "Role with roleId: " + roleId + " do not exist in DB")).build();
+                            "Role with clientname: " + clientname + " do not exist in DB")).build();
         }
     }
 

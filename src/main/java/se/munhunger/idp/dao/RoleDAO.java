@@ -3,7 +3,10 @@ package se.munhunger.idp.dao;
 import org.hibernate.Session;
 import se.munhunger.idp.exception.RoleNotInDatabaseException;
 import se.munhunger.idp.model.persistant.Role;
+import se.munhunger.idp.model.persistant.User;
 
+import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -20,6 +23,22 @@ public class RoleDAO extends DatabaseDAO {
             }
             log.info(() -> "Getting Role: " + role.toString() + " Successful");
             return Optional.of(role);
+        }
+    }
+
+    public Optional<Role> getRoleByUserAndClient(String username, String clientname) {
+        try(Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("select r from Role r where r.username = :user and r.clientname = :client");
+            query.setParameter("user", username)
+                    .setParameter("client", clientname);
+            List<Role> role = query.setParameter("user", username)
+                    .setParameter("client", clientname).getResultList();
+            if(role == null || role.isEmpty()) {
+                log.warning(() -> "Error Role for client: " + clientname + " do not exist");
+                return Optional.empty();
+            }
+            log.info(() -> "Getting Role for client: " + clientname + " Successful");
+            return Optional.of(role.get(0));
         }
     }
 
